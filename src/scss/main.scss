@@ -1,0 +1,32 @@
+// 基本颜色
+// -----------------------
+
+$color-brand-color:       #01A0FF !default; // 品牌色、链接色、功能色
+
+$color-bg-content:        #F2F6F9 !default; // 只做背景使用
+$color-bg-content-s:      #FFFFFF !default; // 只做背景使用/次级背景
+$color-bg-element:        #FFFFFF !default; // 只做元素背景
+$color-bg-element-s:      #F2F6F9 !default; // 只做元素背景/搭配$color-bg-content-s使用
+$color-bg-disable:        #F2F6F9 !default; // 只做禁用元素的背景
+$color-bg-watermark:      #999999 !default; // 水印
+
+$color-line:              #E3E9ED !default; // 线条颜色
+$color-shadow:            #EEEEEE !default; // 阴影颜色
+
+$color-text-navbar:       #323232 !default; // 导航栏颜色
+$color-text-primary:      #323232 !default; // 主文案文字颜色
+$color-text-primary-s:    #525866 !default; // 副标题/正文摘要
+$color-text-description:  #87939D !default; // 辅助性描述文案
+$color-text-description-s:#AFB8BF !default; // 次要辅助性描述文案/时间
+$color-text-disable:      #D7DBDF !default; // 预填/禁用文本
+$color-text-disable-s:    #AFB8BF !default; // 只能搭配$color-bg-disable背景使用
+$color-text-in-brand:     #FFFFFF !default; // 在主题色里面的文字
+
+$color-text-link:         #01A0FF !default; // 链接色
+$color-text-activity:     #F29416 !default; // 积极/活动奖励/得分
+$color-text-danger:       #ED4622 !default; // 红点/错误/警告
+
+$color-status-success:    #7EBF19 !default; // 通过
+$color-status-primary:    #66B3FF !default; // 通常/成功
+$color-status-error:      #ED4622 !default; // 驳回/失败
+$color-status-warning:    #FB7E48 !default; // 等待中

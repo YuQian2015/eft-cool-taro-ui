@@ -1,0 +1,11 @@
+{
+  "name": "eft-cool-taro-ui",
+  "version": "0.0.2",
+  "description": "EXE大前端团队Taro页面组件",
+  "main": "index.js",
+  "keywords": [
+    "Taro"
+  ],
+  "author": "EFT",
+  "license": "ISC"
+}

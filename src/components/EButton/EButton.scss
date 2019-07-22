@@ -1,0 +1,78 @@
+
+@import '../../scss/main';
+.EButton {
+    background-color: $color-brand-color;
+    color: $color-text-in-brand;
+    text-align: center;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    border-radius: 8px;
+    margin: 10px;
+    &.disabled {
+        border-radius: 8px;
+        font-size: 36px;
+        color: $color-text-disable-s;
+        pointer-events: none;
+        background: $color-bg-disable;
+    }
+    &:active::after {
+        content: "";
+        position: absolute;
+        transform-origin: center;
+        box-sizing: border-box;
+        pointer-events: none;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        transform: scale(0.5);
+        background: rgba(255, 255, 255, 0.2);
+    }
+    &.large {
+        height: 100px;
+        line-height: 100px;
+        font-size: 36px;
+    }
+    &.normal {
+        height: 88px;
+        line-height: 88px;
+        font-size: 32px;
+    }
+    &.small {
+        height: 54px;
+        line-height: 54px;
+        font-size: 28px;
+    }
+    &.mini {
+        height: 48px;
+        line-height: 48px;
+        font-size: 24px;
+    }
+    &.circle {
+        border-radius: 50px;
+        &:active::after {
+            border-radius: 100px;
+        }
+    }
+    &.inline {
+        display: inline-block;
+        &.large {
+            padding: 0 32px;
+        }
+        &.normal {
+            padding: 0 24px;
+        }
+        &.small {
+            padding: 0 16px;
+        }
+        &.mini {
+            padding: 0 8px;
+        }
+    }
+    &.outline {
+        background: transparent;
+        color: $color-brand-color;
+        border: 1PX solid $color-brand-color;
+    }
+}
