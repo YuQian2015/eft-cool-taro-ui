@@ -5,12 +5,12 @@ import ERefresher from '../ERefresher/ERefresher'
 import { throttle, vibrateShort } from '../../utils'
 import './EContent.scss'
 
-const windowHeight = Taro.getSystemInfoSync().windowHeight
+let windowHeight = Taro.getSystemInfoSync().windowHeight
 
 /**
  * 监听 EContent 的事件
  * 针对刷新、内容高度、加载状态的控制
- * ESetHeader、ESetFooter、refreshStart、refreshEnd、
+ * ESetHeader、ESetFooter、ERefreshStart、ERefreshEnd、
  */
 export default class EContent extends Component {
   constructor() {
@@ -26,7 +26,6 @@ export default class EContent extends Component {
       dragState: 0, //刷新状态 0不做操作 1刷新
       dragComplete: 0, // 拖拽状态的完成度
       scrollY: true,
-      windowHeight,
       footerHeight: 0,
       headerHeight: 0,
       isRefreshing: false,
@@ -51,7 +50,7 @@ export default class EContent extends Component {
 
     this.showRefresh = this.showRefresh.bind(this)
     this.hideRefresh = this.hideRefresh.bind(this)
-    
+
     this.focus = this.focus.bind(this)
     this.blur = this.blur.bind(this)
 
@@ -68,8 +67,8 @@ export default class EContent extends Component {
     console.log('加载Content——————————————')
     Taro.eventCenter.on('ESetHeader', this.header)
     Taro.eventCenter.on('ESetFooter', this.footer)
-    Taro.eventCenter.on('refreshStart', this.showRefresh)
-    Taro.eventCenter.on('refreshEnd', this.hideRefresh)
+    Taro.eventCenter.on('ERefreshStart', this.showRefresh)
+    Taro.eventCenter.on('ERefreshEnd', this.hideRefresh)
     Taro.eventCenter.on('focus', this.focus)
     Taro.eventCenter.on('blur', this.blur)
   }
@@ -78,8 +77,8 @@ export default class EContent extends Component {
     console.log('卸载Content——————————————')
     Taro.eventCenter.off('ESetHeader', this.header)
     Taro.eventCenter.off('ESetFooter', this.footer)
-    Taro.eventCenter.off('refreshStart', this.showRefresh)
-    Taro.eventCenter.off('refreshEnd', this.hideRefresh)
+    Taro.eventCenter.off('ERefreshStart', this.showRefresh)
+    Taro.eventCenter.off('ERefreshEnd', this.hideRefresh)
     Taro.eventCenter.off('focus', this.focus)
     Taro.eventCenter.off('blur', this.blur)
   }
@@ -105,7 +104,7 @@ export default class EContent extends Component {
   onScroll(e) {
     const { scrollTop } = e.detail;
     const { onScrollUp, onScrollDown, onScroll } = this.props;
-    this.isTop = scrollTop <= 0 // 滚动到了顶部
+    this.isTop = scrollTop <= 100 // 滚动到了顶部
     // deltaY在微信小程序适用
     if(scrollTop > 200) {
       onScrollUp && onScrollUp()
@@ -114,7 +113,7 @@ export default class EContent extends Component {
     }
 
     onScroll && onScroll(e)
-    
+
     // throttle({
     //   method: () => {
     //     console.log('开始滚动')
@@ -137,6 +136,7 @@ export default class EContent extends Component {
       method: () => {
         if( this.cacheHeader !== rect.height ) {
           console.log('计算header')
+          windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheHeader = rect.height
           this.setState({
             headerHeight: rect.height
@@ -152,6 +152,7 @@ export default class EContent extends Component {
       method: () => {
         if( this.cacheFooter !== rect.height ) {
           console.log('计算footer')
+          windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheFooter = rect.height
           this.setState({
             footerHeight: rect.height
@@ -239,7 +240,7 @@ export default class EContent extends Component {
   }
   touchEnd(e) {
     if(this.isTop) {
-      this.needPrevent = true; 
+      this.needPrevent = true;
     } else {
       this.needPrevent = false
     }
@@ -312,23 +313,23 @@ export default class EContent extends Component {
   }
 
   render() {
-    const { dragStyle, downDragStyle, dragComplete, downText, windowHeight,
-      footerHeight, headerHeight, isRefreshing, focus } = this.state;   
-    const { emptyText, loading, hasMore, onScrollToLower, children, intlStore } = this.props
+    const { dragStyle, downDragStyle, dragComplete, downText,
+      footerHeight, headerHeight, isRefreshing, focus } = this.state;
+    const { emptyText, loading, hasMore, onScrollToLower, children } = this.props
     const showNoMore = !loading && !hasMore && !!onScrollToLower
     const showLoadMore = !loading && hasMore && !!onScrollToLower
     const bottom = emptyText
       ?<View className='empty'>{emptyText}</View>
       :showNoMore
         ?<View className='no-more'>
-          <View>{intlStore.local.TEXT_NO_CONTENT}</View>
+           没有更多了
         </View>
         : showLoadMore
           ?<View className='load-more'>
-            加载更多
+            <View>加载中</View>
           </View>
           : null
-    
+
     return (
       <View className='EContent' style={{ height: `${windowHeight - footerHeight - headerHeight}px` }}>
         <View className='refresher' style={downDragStyle}>
@@ -349,7 +350,7 @@ export default class EContent extends Component {
           onScrollToLower={this.onScrollToLower}
           onScroll={this.onScroll}
           lowerThreshold={100}
-          enableBackToTop={true}
+          enableBackToTop
           className='scroll-content'
           scrollY
           scrollWithAnimation

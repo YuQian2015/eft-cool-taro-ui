@@ -7,11 +7,16 @@ import EContent from '../EContent/EContent'
 import EFooter from '../EFooter/EFooter'
 
 export default class EPage extends Component {
+
+
   render() {
     return (
       <View className={`EPage ${this.props.className || ''}`}>
         <EHeader>{this.props.header}</EHeader>
-        <EContent>{this.props.children}</EContent>
+        <EContent
+          onRefresh={this.props.onRefresh}
+          onScrollToLower={this.props.onRefresh}
+        >{this.props.children}</EContent>
         <EFooter>{this.props.footer}</EFooter>
       </View>
     )
@@ -21,5 +26,7 @@ export default class EPage extends Component {
 EPage.propTypes = {
   className: PropTypes.string,
   header: PropTypes.element,
-  footer: PropTypes.element
+  footer: PropTypes.element,
+  onRefresh: PropTypes.func,
+  onLoadMore: PropTypes.func
 }

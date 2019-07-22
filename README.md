@@ -1,4 +1,4 @@
-EXE大前端团队Taro页面布局组件
+EXE大前端团队Taro页面布局组件，更多内容不断补充中~
 
 ## 简介
 
@@ -41,26 +41,64 @@ export default class Index extends Component {
 
   componentDidHide() { }
 
+  showColors = () => {
+    Taro.navigateTo({
+      url: '/pages/color/color'
+    })
+  }
+
+  showRefresher = () => {
+    Taro.eventCenter.trigger('ERefreshStart')
+  }
+
+  hideRefresher = () => {
+    Taro.eventCenter.trigger('ERefreshEnd')
+  }
+
+  refresh = () => {
+    Taro.showToast({
+      title: '刷新',
+      icon: 'none'
+    })
+  }
 
   render() {
-    const header = 'header'
-    const footer = <View>footer</View>
+    const header = <View>
+      <EButton size='normal' inline circle outline onClick={this.showRefresher} size='small'>显示刷新</EButton>
+      <EButton size='normal' inline circle outline onClick={this.hideRefresher} size='small'>隐藏刷新</EButton>
+    </View>
+    const footer = <View>
+      footer
+      <EButton onClick={this.showColors}>footer</EButton>
+    </View>
     return (
-      <EPage header={header} footer={footer}>
-        {/*...*/}
+      <EPage
+        header={header}
+        footer={footer}
+        onRefresh={this.refresh}
+      >
+        content
       </EPage>
     )
   }
 }
 ```
 
-props
+**props**
 
-| props     | propTypes | 描述         |
-| --------- | --------- | ------------ |
-| className | string    | 自定义样式名 |
-| header    | element   | 顶部元素     |
-| footer    | element   | 底部元素     |
+| props      | propTypes | 描述               |
+| ---------- | --------- | ------------------ |
+| className  | string    | 自定义样式名       |
+| header     | element   | 顶部元素           |
+| footer     | element   | 底部元素           |
+| onRefresh  | function  | 下拉刷新回调函数   |
+| onLoadMore | function  | 滚动到底部加载更多 |
 
+`EPage` 支持通过事件来显示和隐藏刷新动画，使得我们能够在产生网络请求的同时显示刷新：
 
+```jsx
+Taro.eventCenter.trigger('ERefreshStart') // 显示刷新
+Taro.eventCenter.trigger('ERefreshEnd') // 隐藏刷新
+```
 
+可以在请求拦截器里面对刷新动画进行处理。
