@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 
-import { EContent, EHeader, EFooter, EButton, EPage } from '../../components'
+import { EButton, EPage } from '../../components'
 
 import './index.scss'
 
@@ -20,12 +20,6 @@ export default class Index extends Component {
   componentDidShow() { }
 
   componentDidHide() { }
-
-  showColors = () => {
-    Taro.navigateTo({
-      url: '/pages/color/color'
-    })
-  }
 
   showRefresher = () => {
     Taro.eventCenter.trigger('ERefreshStart')
@@ -55,17 +49,16 @@ export default class Index extends Component {
       <EButton size='normal' inline circle outline onClick={this.hideRefresher} size='small'>隐藏刷新</EButton>
     </View>
     const footer = <View>
-      footer
-      <EButton onClick={this.showColors}>footer</EButton>
+      <EButton>footer</EButton>
     </View>
     return (
       <EPage
-        header={header}
-        footer={footer}
+        renderHeader={header}
+        renderFooter={footer}
         onRefresh={this.refresh}
         onLoadMore={this.loadMore}
       >
-        content
+          <View>content</View>
       </EPage>
     )
   }

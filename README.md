@@ -21,7 +21,7 @@ $ npm i eft-cool-taro-ui --save
 ```jsx
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { EPage } from 'eft-cool-taro-ui'
+import { EButton, EPage } from 'eft-cool-taro-ui'
 
 import './index.scss'
 
@@ -41,12 +41,6 @@ export default class Index extends Component {
 
   componentDidHide() { }
 
-  showColors = () => {
-    Taro.navigateTo({
-      url: '/pages/color/color'
-    })
-  }
-
   showRefresher = () => {
     Taro.eventCenter.trigger('ERefreshStart')
   }
@@ -62,22 +56,29 @@ export default class Index extends Component {
     })
   }
 
+  loadMore = () => {
+    Taro.showToast({
+      title: '加载更多',
+      icon: 'none'
+    })
+  }
+
   render() {
     const header = <View>
       <EButton size='normal' inline circle outline onClick={this.showRefresher} size='small'>显示刷新</EButton>
       <EButton size='normal' inline circle outline onClick={this.hideRefresher} size='small'>隐藏刷新</EButton>
     </View>
     const footer = <View>
-      footer
-      <EButton onClick={this.showColors}>footer</EButton>
+      <EButton>footer</EButton>
     </View>
     return (
       <EPage
-        header={header}
-        footer={footer}
+        renderHeader={header}
+        renderFooter={footer}
         onRefresh={this.refresh}
+        onLoadMore={this.loadMore}
       >
-        content
+          <View>content</View>
       </EPage>
     )
   }
@@ -86,13 +87,14 @@ export default class Index extends Component {
 
 **props**
 
-| props      | propTypes | 描述               |
-| ---------- | --------- | ------------------ |
-| className  | string    | 自定义样式名       |
-| header     | element   | 顶部元素           |
-| footer     | element   | 底部元素           |
-| onRefresh  | function  | 下拉刷新回调函数   |
-| onLoadMore | function  | 滚动到底部加载更多 |
+| props        | propTypes | 描述               |
+| ------------ | --------- | ------------------ |
+| className    | string    | 自定义样式名       |
+| renderHeader | element   | 顶部元素           |
+| renderFooter | element   | 底部元素           |
+| onRefresh    | func      | 下拉刷新回调函数   |
+| onLoadMore   | func      | 滚动到底部加载更多 |
+| hasMore      | bool      | 是否能够加载更多   |
 
 `EPage` 支持通过事件来显示和隐藏刷新动画，使得我们能够在产生网络请求的同时显示刷新：
 

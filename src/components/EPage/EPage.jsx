@@ -12,12 +12,13 @@ export default class EPage extends Component {
   render() {
     return (
       <View className={`EPage ${this.props.className || ''}`}>
-        <EHeader>{this.props.header}</EHeader>
+        <EHeader>{this.props.renderHeader}</EHeader>
         <EContent
           onRefresh={this.props.onRefresh}
-          onScrollToLower={this.props.onRefresh}
+          onScrollToLower={this.props.onLoadMore}
+          hasMore={this.props.hasMore}
         >{this.props.children}</EContent>
-        <EFooter>{this.props.footer}</EFooter>
+        <EFooter>{this.props.renderFooter}</EFooter>
       </View>
     )
   }
@@ -25,8 +26,9 @@ export default class EPage extends Component {
 
 EPage.propTypes = {
   className: PropTypes.string,
-  header: PropTypes.element,
-  footer: PropTypes.element,
+  renderHeader: PropTypes.element,
+  renderFooter: PropTypes.element,
   onRefresh: PropTypes.func,
-  onLoadMore: PropTypes.func
+  onLoadMore: PropTypes.func,
+  hasMore: PropTypes.bool
 }

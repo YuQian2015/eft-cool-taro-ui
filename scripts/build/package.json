@@ -1,11 +1,16 @@
 {
   "name": "eft-cool-taro-ui",
-  "version": "0.0.4",
+  "version": "0.0.9",
   "description": "EXE大前端团队Taro页面组件",
   "main": "index.js",
   "keywords": [
-    "Taro"
+    "Taro",
+    "Taro-Components"
   ],
   "author": "EFT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YuQian2015/eft-cool-taro-ui"
+  },
   "license": "ISC"
 }

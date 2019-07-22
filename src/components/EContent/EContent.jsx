@@ -355,11 +355,9 @@ export default class EContent extends Component {
           scrollY
           scrollWithAnimation
         >
-          <View onTouchMove={this.touchmove}>
             { children }
             { bottom }
             { focus ? <View className='keyboard'></View> : "" }
-          </View>
         </ScrollView>
       </View>
     )
