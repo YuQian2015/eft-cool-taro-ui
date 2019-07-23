@@ -11,23 +11,31 @@ export default class Index extends Component {
     navigationBarTitleText: '首页'
   }
 
+  constructor() {
+    super()
+    this.state = {
+      noMore: false,
+      hasMore: true
+    }
+  }
+
   componentWillMount() { }
 
-  componentDidMount() { }
+  componentDidMount() {
+    Taro.eventCenter.trigger('ERefreshStart')
+    setTimeout(() => {
+      Taro.eventCenter.trigger('ERefreshEnd')
+      this.setState({
+        hasMore: true
+      })
+    }, 1000)
+  }
 
   componentWillUnmount() { }
 
   componentDidShow() { }
 
   componentDidHide() { }
-
-  showRefresher = () => {
-    Taro.eventCenter.trigger('ERefreshStart')
-  }
-
-  hideRefresher = () => {
-    Taro.eventCenter.trigger('ERefreshEnd')
-  }
 
   refresh = () => {
     Taro.showToast({
@@ -37,28 +45,32 @@ export default class Index extends Component {
   }
 
   loadMore = () => {
-    Taro.showToast({
-      title: '加载更多',
-      icon: 'none'
-    })
+    setTimeout(() => {
+      this.setState({
+        hasMore: false,
+        noMore: true
+      })
+    }, 500)
   }
 
   render() {
-    const header = <View>
-      <EButton size='normal' inline circle outline onClick={this.showRefresher} size='small'>显示刷新</EButton>
-      <EButton size='normal' inline circle outline onClick={this.hideRefresher} size='small'>隐藏刷新</EButton>
+    const { noMore, hasMore } = this.state
+    const header = <View className='header-container'>
+      EFT Taro
     </View>
-    const footer = <View>
-      <EButton>footer</EButton>
-    </View>
+    const footer = <View className='footer-container'>Footer</View>
     return (
       <EPage
         renderHeader={header}
         renderFooter={footer}
         onRefresh={this.refresh}
         onLoadMore={this.loadMore}
+        noMore={noMore}
+        hasMore={hasMore}
       >
-          <View>content</View>
+        <View className='main-container'>
+          <View> Content </View>
+        </View>
       </EPage>
     )
   }

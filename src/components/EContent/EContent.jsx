@@ -83,12 +83,12 @@ export default class EContent extends Component {
     Taro.eventCenter.off('blur', this.blur)
   }
 
-    /**
-   * 触发加载更多
-   *
-   * @memberof Content
-   */
-  onScrollToLower () {
+  /**
+ * 触发加载更多
+ *
+ * @memberof Content
+ */
+  onScrollToLower() {
     throttle({
       method: () => {
         console.log('滑动到底部')
@@ -104,9 +104,9 @@ export default class EContent extends Component {
   onScroll(e) {
     const { scrollTop } = e.detail;
     const { onScrollUp, onScrollDown, onScroll } = this.props;
-    this.isTop = scrollTop <= 100 // 滚动到了顶部
+    this.isTop = scrollTop <= 0 // 滚动到了顶部
     // deltaY在微信小程序适用
-    if(scrollTop > 200) {
+    if (scrollTop > 200) {
       onScrollUp && onScrollUp()
     } else {
       onScrollDown && onScrollDown()
@@ -130,11 +130,11 @@ export default class EContent extends Component {
     //   delay: 500
     // })
   }
-  header (rect) {
+  header(rect) {
     // 优化 Content 渲染频率
     throttle({
       method: () => {
-        if( this.cacheHeader !== rect.height ) {
+        if (this.cacheHeader !== rect.height) {
           console.log('计算header')
           windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheHeader = rect.height
@@ -146,11 +146,11 @@ export default class EContent extends Component {
       type: 'header'
     })
   }
-  footer (rect) {
+  footer(rect) {
     // 优化 Content 渲染频率
     throttle({
       method: () => {
-        if( this.cacheFooter !== rect.height ) {
+        if (this.cacheFooter !== rect.height) {
           console.log('计算footer')
           windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheFooter = rect.height
@@ -162,12 +162,12 @@ export default class EContent extends Component {
       type: 'footer'
     })
   }
-  focus () {
+  focus() {
     this.setState({
       focus: true
     })
   }
-  blur () {
+  blur() {
     this.setState({
       focus: false
     })
@@ -177,10 +177,10 @@ export default class EContent extends Component {
     this.start_p = e.touches[0];
   }
   touchmove(e) {
-    if(this.props.disabledRefresh) {
+    if (this.props.disabledRefresh) {
       return
     }
-    if(this.state.isRefreshing) {
+    if (this.state.isRefreshing) {
       e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
       e.stopPropagation();
       return
@@ -211,12 +211,12 @@ export default class EContent extends Component {
         dragComplete
       })
       if (move_y - start_y > 0) { // 下拉操作
-        if(this.needPrevent) {
+        if (this.needPrevent) {
           e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
           e.stopPropagation();
         }
         if (pY >= this.config.threshold) {
-          if(this.state.dragState === 0) {
+          if (this.state.dragState === 0) {
             vibrateShort()
             this.setState({ dragState: 1, downText: '释放刷新' })
           }
@@ -239,7 +239,7 @@ export default class EContent extends Component {
     }
   }
   touchEnd(e) {
-    if(this.isTop) {
+    if (this.isTop) {
       this.needPrevent = true;
     } else {
       this.needPrevent = false
@@ -268,10 +268,10 @@ export default class EContent extends Component {
         isRefreshing: false
       })
     }
-    if(refreshLimit <= 0) {
+    if (refreshLimit <= 0) {
       _doRecover()
     } else {
-      setTimeout(()=>{
+      setTimeout(() => {
         _doRecover()
       }, refreshLimit)
     }
@@ -315,20 +315,16 @@ export default class EContent extends Component {
   render() {
     const { dragStyle, downDragStyle, dragComplete, downText,
       footerHeight, headerHeight, isRefreshing, focus } = this.state;
-    const { emptyText, loading, hasMore, onScrollToLower, children } = this.props
-    const showNoMore = !loading && !hasMore && !!onScrollToLower
-    const showLoadMore = !loading && hasMore && !!onScrollToLower
-    const bottom = emptyText
-      ?<View className='empty'>{emptyText}</View>
-      :showNoMore
-        ?<View className='no-more'>
-           没有更多了
-        </View>
-        : showLoadMore
-          ?<View className='load-more'>
-            <View>加载中</View>
-          </View>
-          : null
+    const { loading, hasMore, noMore, onScrollToLower, children, renderNoMore, renderHasMore } = this.props
+
+    const noMoreContent = renderNoMore || <View className='no-more'> 没有更多了 </View>
+    const moreContent = renderHasMore || <View className='load-more'> 加载中 </View>
+
+    const bottom = noMore
+      ? noMoreContent
+      : hasMore
+        ? moreContent
+        : null
 
     return (
       <View className='EContent' style={{ height: `${windowHeight - footerHeight - headerHeight}px` }}>
@@ -355,9 +351,9 @@ export default class EContent extends Component {
           scrollY
           scrollWithAnimation
         >
-            { children }
-            { bottom }
-            { focus ? <View className='keyboard'></View> : "" }
+          {children}
+          {bottom}
+          {focus ? <View className='keyboard'></View> : ""}
         </ScrollView>
       </View>
     )

@@ -17,6 +17,9 @@ export default class EPage extends Component {
           onRefresh={this.props.onRefresh}
           onScrollToLower={this.props.onLoadMore}
           hasMore={this.props.hasMore}
+          noMore={this.props.noMore}
+          renderNoMore={this.props.renderNoMore}
+          renderHasMore={this.props.renderHasMore}
         >{this.props.children}</EContent>
         <EFooter>{this.props.renderFooter}</EFooter>
       </View>
@@ -30,5 +33,8 @@ EPage.propTypes = {
   renderFooter: PropTypes.element,
   onRefresh: PropTypes.func,
   onLoadMore: PropTypes.func,
-  hasMore: PropTypes.bool
+  hasMore: PropTypes.bool,
+  noMore: PropTypes.bool,
+  renderNoMore: PropTypes.element,
+  renderHasMore: PropTypes.element
 }
