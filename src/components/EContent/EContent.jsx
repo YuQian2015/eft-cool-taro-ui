@@ -104,7 +104,7 @@ export default class EContent extends Component {
   onScroll(e) {
     const { scrollTop } = e.detail;
     const { onScrollUp, onScrollDown, onScroll } = this.props;
-    this.isTop = scrollTop <= 0 // 滚动到了顶部
+    this.isTop = scrollTop <= 20 // 滚动到了顶部
     // deltaY在微信小程序适用
     if (scrollTop > 200) {
       onScrollUp && onScrollUp()
@@ -317,13 +317,10 @@ export default class EContent extends Component {
       footerHeight, headerHeight, isRefreshing, focus } = this.state;
     const { loading, hasMore, noMore, onScrollToLower, children, renderNoMore, renderHasMore } = this.props
 
-    const noMoreContent = renderNoMore || <View className='no-more'> 没有更多了 </View>
-    const moreContent = renderHasMore || <View className='load-more'> 加载中 </View>
-
     const bottom = noMore
-      ? noMoreContent
+      ? renderNoMore || <View className='no-more'> 没有更多了 </View>
       : hasMore
-        ? moreContent
+        ? renderHasMore || <View className='load-more'> 加载中 </View>
         : null
 
     return (
