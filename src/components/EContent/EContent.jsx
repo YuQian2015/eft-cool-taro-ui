@@ -22,7 +22,7 @@ export default class EContent extends Component {
       downDragStyle: { //下拉图标的样式
         height: 0 + 'px'
       },
-      downText: '下拉刷新',
+      textStatus: 0,
       dragState: 0, //刷新状态 0不做操作 1刷新
       dragComplete: 0, // 拖拽状态的完成度
       scrollY: true,
@@ -33,36 +33,18 @@ export default class EContent extends Component {
     }
     this.isTop = true
     this.needPrevent = false
-    this.config = {
-      recoverTime: 300, // 恢复未加载状态的时间 ms
-      refreshTime: 500, // 刷新动画至少显示的时间 ms
+    this.refresherConfig = {
+      recoverTime: 300, // 回弹动画的时间时间 ms
+      refreshTime: 500, // 刷新动画至少显示的时间 ms （用来展示刷新动画）
       threshold: 70, // 刷新的阈值 px  拉动长度（低于这个值的时候不执行）
-      maxY: 200, // 拉动的最大高度 px
-      refresherHeight: 50  // 刷新动画占的高度 px
+      maxHeight: 200, // 可拉动的最大高度 px
+      height: 60,  // 刷新动画占的高度 px
+      showText: true, // 显示文字
+      refreshText: ['下拉刷新', '释放刷新', '加载中'], // 刷新文字
+      ...this.props.refresherConfig
     }
-    this.onScrollToLower = this.onScrollToLower.bind(this)
-    this.onScrollToUpper = this.onScrollToUpper.bind(this)
-    this.onScroll = this.onScroll.bind(this)
-
-    this.touchStart = this.touchStart.bind(this)
-    this.touchEnd = this.touchEnd.bind(this)
-    this.touchmove = this.touchmove.bind(this)
-
-    this.showRefresh = this.showRefresh.bind(this)
-    this.hideRefresh = this.hideRefresh.bind(this)
-
-    this.focus = this.focus.bind(this)
-    this.blur = this.blur.bind(this)
-
-    this.header = this.header.bind(this)
-    this.footer = this.footer.bind(this)
   }
 
-  static defaultProps = {
-    loading: false,
-    hasMore: false,
-    onScrollToLower: null
-  }
   componentWillMount() {
     console.log('加载Content——————————————')
     Taro.eventCenter.on('ESetHeader', this.header)
@@ -88,7 +70,7 @@ export default class EContent extends Component {
  *
  * @memberof Content
  */
-  onScrollToLower() {
+  onScrollToLower = () => {
     throttle({
       method: () => {
         console.log('滑动到底部')
@@ -98,10 +80,10 @@ export default class EContent extends Component {
     })
   }
 
-  onScrollToUpper() { //滚动到顶部事件
+  onScrollToUpper = () => { //滚动到顶部事件
     // console.log('滚动到顶部事件')
   }
-  onScroll(e) {
+  onScroll = (e) => {
     const { scrollTop } = e.detail;
     const { onScrollUp, onScrollDown, onScroll } = this.props;
     this.isTop = scrollTop <= 20 // 滚动到了顶部
@@ -130,12 +112,12 @@ export default class EContent extends Component {
     //   delay: 500
     // })
   }
-  header(rect) {
+  header = (rect) => {
     // 优化 Content 渲染频率
     throttle({
       method: () => {
         if (this.cacheHeader !== rect.height) {
-          console.log('计算header')
+          // console.log('计算header')
           windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheHeader = rect.height
           this.setState({
@@ -146,12 +128,12 @@ export default class EContent extends Component {
       type: 'header'
     })
   }
-  footer(rect) {
+  footer = (rect) => {
     // 优化 Content 渲染频率
     throttle({
       method: () => {
         if (this.cacheFooter !== rect.height) {
-          console.log('计算footer')
+          // console.log('计算footer')
           windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheFooter = rect.height
           this.setState({
@@ -162,21 +144,21 @@ export default class EContent extends Component {
       type: 'footer'
     })
   }
-  focus() {
+  focus = () => {
     this.setState({
       focus: true
     })
   }
-  blur() {
+  blur = () => {
     this.setState({
       focus: false
     })
   }
 
-  touchStart(e) {
+  touchStart = (e) => {
     this.start_p = e.touches[0];
   }
-  touchmove(e) {
+  touchmove = (e) => {
     if (this.props.disabledRefresh) {
       return
     }
@@ -203,7 +185,7 @@ export default class EContent extends Component {
     if (dev < deviationX) { // 当偏移数值大于设置的偏移数值时则不执行操作
       let pY = move_y - start_y;
       pY = Math.pow(10, Math.log10(Math.abs(pY)) / 1.3); // 拖动倍率
-      let dragComplete = parseInt((pY / this.config.threshold) * 100);
+      let dragComplete = parseInt((pY / this.refresherConfig.threshold) * 100);
       if (dragComplete > 100) {
         dragComplete = 100
       }
@@ -215,16 +197,16 @@ export default class EContent extends Component {
           e.preventDefault(); //阻止默认的处理方式(阻止下拉滑动的效果)
           e.stopPropagation();
         }
-        if (pY >= this.config.threshold) {
+        if (pY >= this.refresherConfig.threshold) {
           if (this.state.dragState === 0) {
             vibrateShort()
-            this.setState({ dragState: 1, downText: '释放刷新' })
+            this.setState({ dragState: 1, textStatus: 1 })
           }
         } else {
-          this.setState({ dragState: 0, downText: '下拉刷新' })
+          this.setState({ dragState: 0, textStatus: 0 })
         }
-        if (pY >= this.config.maxY) {
-          pY = this.config.maxY
+        if (pY >= this.refresherConfig.maxHeight) {
+          pY = this.refresherConfig.maxHeight
         }
         this.setState({
           dragStyle: {
@@ -238,7 +220,7 @@ export default class EContent extends Component {
       }
     }
   }
-  touchEnd(e) {
+  touchEnd = (e) => {
     if (this.isTop) {
       this.needPrevent = true;
     } else {
@@ -251,49 +233,51 @@ export default class EContent extends Component {
     }
     this.recover()
   }
+  doRecover = () => {
+    this.setState({
+      dragState: 0,
+      dragStyle: {
+        top: 0 + 'px',
+        transition: `all ${this.refresherConfig.recoverTime}ms`
+      },
+      downDragStyle: {
+        height: 0 + 'px',
+        transition: `all ${this.refresherConfig.recoverTime}ms`
+      },
+      scrollY: true,
+      isRefreshing: false,
+      textStatus: 0
+    })
+  }
   recover() {//还原初始设置
-    const refreshLimit = this.config.refreshTime - (new Date - this.startTime)
-    const _doRecover = () => {
-      this.setState({
-        dragState: 0,
-        dragStyle: {
-          top: 0 + 'px',
-          transition: `all ${this.config.recoverTime}ms`
-        },
-        downDragStyle: {
-          height: 0 + 'px',
-          transition: `all ${this.config.recoverTime}ms`
-        },
-        scrollY: true,
-        isRefreshing: false
-      })
-    }
+    const refreshLimit = this.refresherConfig.refreshTime - (new Date - this.startTime)
     if (refreshLimit <= 0) {
-      _doRecover()
+      this.doRecover()
     } else {
       setTimeout(() => {
-        _doRecover()
+        this.doRecover()
       }, refreshLimit)
     }
   }
 
-  showRefresh() {
+  showRefresh = () => {
     throttle({
       method: () => {
-        console.log('显示刷新')
+        // console.log('显示刷新')
         this.startTime = new Date()
         const time = 0.2;
         this.setState({
           dragStyle: {
-            top: this.config.refresherHeight + 'px',
+            top: this.refresherConfig.height + 'px',
             transition: `all ${time}s`
           },
           downDragStyle: {
-            height: this.config.refresherHeight + 'px',
+            height: this.refresherConfig.height + 'px',
             transition: `all ${time}s`
           },
           dragComplete: 100,
-          isRefreshing: true
+          isRefreshing: true,
+          textStatus: 2
         })
       },
       ahead: true,
@@ -301,10 +285,10 @@ export default class EContent extends Component {
     })
   }
 
-  hideRefresh() {
+  hideRefresh = () => {
     throttle({
       method: () => {
-        console.log('隐藏刷新')
+        // console.log('隐藏刷新')
         this.recover()
       },
       ahead: true,
@@ -313,9 +297,9 @@ export default class EContent extends Component {
   }
 
   render() {
-    const { dragStyle, downDragStyle, dragComplete, downText,
+    const { dragStyle, downDragStyle, dragComplete, textStatus,
       footerHeight, headerHeight, isRefreshing, focus } = this.state;
-    const { loading, hasMore, noMore, onScrollToLower, children, renderNoMore, renderHasMore } = this.props
+    const { loading, hasMore, noMore, onScrollToLower, children, renderNoMore, renderHasMore, loadMoreThreshold } = this.props
 
     const bottom = noMore
       ? renderNoMore || <View className='no-more'> 没有更多了 </View>
@@ -327,11 +311,12 @@ export default class EContent extends Component {
       <View className='EContent' style={{ height: `${windowHeight - footerHeight - headerHeight}px` }}>
         <View className='refresher' style={downDragStyle}>
           <View className='refresher-holder'>
-            <ERefresher
-              complete={dragComplete}
-              text={downText}
-              isRefreshing={isRefreshing}
-            />
+            <ERefresher complete={dragComplete} isRefreshing={isRefreshing} />
+            {
+              this.refresherConfig.showText 
+                ? <View className='down-text'>{this.refresherConfig.refreshText[textStatus]}</View>
+                : null
+            }
           </View>
         </View>
         <ScrollView
@@ -342,7 +327,7 @@ export default class EContent extends Component {
           onScrollToUpper={this.onScrollToUpper}
           onScrollToLower={this.onScrollToLower}
           onScroll={this.onScroll}
-          lowerThreshold={100}
+          lowerThreshold={loadMoreThreshold >= 0 ? loadMoreThreshold : 100}
           enableBackToTop
           className='scroll-content'
           scrollY

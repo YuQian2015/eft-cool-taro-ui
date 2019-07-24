@@ -1,57 +1,72 @@
 @import '../../scss/main';
+
 .EContent {
 	height: 100%;
-    position: relative;
+	position: relative;
 	overflow: hidden;
 	background: $color-bg-content;
-	.refresher{
-	    top: 0px;
+
+	.refresher {
+		top: 0px;
 		width: 100%;
 		position: absolute;
+
 		.refresher-holder {
 			display: flex;
+			flex-direction: column;
 			width: 100%;
 			justify-content: center;
 			align-items: center;
 			position: absolute;
 			font-size: 30px;
+			min-height: 100px;
 			bottom: 0;
-			padding: 30px 0;
+
+			.down-text {
+				padding-top: 10px;
+				font-size: 24px;
+			}
 		}
 	}
-	.load-more{
-	    display: flex;
-	    overflow: hidden;
-	    justify-content: center;
-	    align-items: center;
+
+	.load-more {
+		display: flex;
+		overflow: hidden;
+		justify-content: center;
+		align-items: center;
 		font-size: 24px;
 		padding: 50px 0;
 	}
-	.scroll-content{
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-	.downText{
-        margin-left: 20px;
+
+	.scroll-content {
+		height: 100%;
+		width: 100%;
+		position: absolute;
 	}
+
+	.downText {
+		margin-left: 20px;
+	}
+
 	.no-more {
 		text-align: center;
 		font-size: 24px;
 		line-height: 60px;
 		color: $color-text-primary;
-		margin: 50px  0;
+		margin: 50px 0;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 	}
+
 	.empty {
 		color: $color-text-primary;
 		line-height: 60px;
 		font-size: 24px;
 		text-align: center;
 	}
+
 	.keyboard {
 		height: 300px;
 	}

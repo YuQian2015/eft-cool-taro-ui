@@ -55,10 +55,12 @@ export default class Index extends Component {
 
   render() {
     const { noMore, hasMore } = this.state
-    const header = <View className='header-container'>
-      EFT Taro
-    </View>
+    const header = <View className='header-container'> EFT Taro </View>
     const footer = <View className='footer-container'>Footer</View>
+    const refresherConfig = {
+      recoverTime: 300,
+      refreshTime: 1000
+    }
     return (
       <EPage
         renderHeader={header}
@@ -67,6 +69,7 @@ export default class Index extends Component {
         onLoadMore={this.loadMore}
         noMore={noMore}
         hasMore={hasMore}
+        refresherConfig={refresherConfig}
       >
         <View className='main-container'>
           <View> Content </View>

@@ -16,10 +16,13 @@ export default class EPage extends Component {
         <EContent
           onRefresh={this.props.onRefresh}
           onScrollToLower={this.props.onLoadMore}
+          onScroll={this.props.onScroll}
           hasMore={this.props.hasMore}
           noMore={this.props.noMore}
+          loadMoreThreshold={this.props.loadMoreThreshold}
           renderNoMore={this.props.renderNoMore}
           renderHasMore={this.props.renderHasMore}
+          refresherConfig={this.props.refresherConfig || {}}
         >{this.props.children}</EContent>
         <EFooter>{this.props.renderFooter}</EFooter>
       </View>
@@ -33,8 +36,17 @@ EPage.propTypes = {
   renderFooter: PropTypes.element,
   onRefresh: PropTypes.func,
   onLoadMore: PropTypes.func,
+  onScroll: PropTypes.func,
+  loadMoreThreshold: PropTypes.number,
   hasMore: PropTypes.bool,
   noMore: PropTypes.bool,
   renderNoMore: PropTypes.element,
-  renderHasMore: PropTypes.element
+  renderHasMore: PropTypes.element,
+  refresherConfig: PropTypes.shape({
+      recoverTime:  PropTypes.number,
+      refreshTime: PropTypes.number,
+      threshold: PropTypes.number,
+      maxHeight: PropTypes.number,
+      height: PropTypes.number
+  })
 }
