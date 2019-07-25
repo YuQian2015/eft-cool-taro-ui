@@ -23,7 +23,7 @@ $ npm i eft-cool-taro-ui --save
 ```jsx
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { EButton, EPage, EActivityIndicator } from 'eft-cool-taro-ui'
+import { EButton, EPage } from 'eft-cool-taro-ui'
 
 import './index.scss'
 
