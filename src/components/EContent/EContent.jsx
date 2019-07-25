@@ -86,7 +86,7 @@ export default class EContent extends Component {
   onScroll = (e) => {
     const { scrollTop } = e.detail;
     const { onScrollUp, onScrollDown, onScroll } = this.props;
-    this.isTop = scrollTop <= 20 // 滚动到了顶部
+    this.isTop = scrollTop <= 80 // 滚动到了顶部
     // deltaY在微信小程序适用
     if (scrollTop > 200) {
       onScrollUp && onScrollUp()
@@ -299,21 +299,24 @@ export default class EContent extends Component {
   render() {
     const { dragStyle, downDragStyle, dragComplete, textStatus,
       footerHeight, headerHeight, isRefreshing, focus } = this.state;
-    const { loading, hasMore, noMore, onScrollToLower, children, renderNoMore, renderHasMore, loadMoreThreshold } = this.props
+    const { loading, hasMore, onScrollToLower, children, loadMoreThreshold, hasMoreText, noMoreText } = this.props
 
-    const bottom = noMore
-      ? renderNoMore || <View className='no-more'> 没有更多了 </View>
-      : hasMore
-        ? renderHasMore || <View className='load-more'> 加载中 </View>
-        : null
+    // const bottom = noMore
+    //   ? renderNoMore || <View className='no-more'> 没有更多了 </View>
+    //   : hasMore
+    //     ? renderHasMore || <View className='load-more'> 加载中 </View>
+    //     : null
 
+    const bottom = this.props.noMore
+      ? <View className='no-more'>{noMoreText || '没有更多了'}</View>
+      : <View className='load-more'>{hasMoreText || '加载中'}</View>
     return (
       <View className='EContent' style={{ height: `${windowHeight - footerHeight - headerHeight}px` }}>
         <View className='refresher' style={downDragStyle}>
           <View className='refresher-holder'>
             <ERefresher complete={dragComplete} isRefreshing={isRefreshing} />
             {
-              this.refresherConfig.showText 
+              this.refresherConfig.showText
                 ? <View className='down-text'>{this.refresherConfig.refreshText[textStatus]}</View>
                 : null
             }

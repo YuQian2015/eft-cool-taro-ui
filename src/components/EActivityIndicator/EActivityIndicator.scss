@@ -8,10 +8,7 @@
   border-bottom: 0.2em solid rgba(255, 255, 255, 0.2);
   border-left: 0.2em solid #ffffff;
   animation: loader 1.0s infinite linear;
-
-  &.inline {
-    display: inline-block;
-  }
+  display: inline-block;
 
   &,
   &:after {

@@ -50,13 +50,19 @@ export default class Index extends Component {
         hasMore: false,
         noMore: true
       })
-    }, 500)
+    }, 2000)
   }
 
   render() {
     const { noMore, hasMore } = this.state
-    const header = <View className='header-container'> EFT Taro </View>
-    const footer = <View className='footer-container'>Footer</View>
+    const header = <View className='header-container'> 
+      <View style={{textAlign: 'center'}}>顶部固定区域</View>
+    </View>
+    const footer = <View className='footer-container'>
+      <View style={{textAlign: 'center'}}>底部固定区域</View>
+      <EButton circle>按钮一</EButton>
+      <EButton outline circle>按钮二</EButton>
+    </View>
     const refresherConfig = {
       recoverTime: 300,
       refreshTime: 1000
@@ -69,6 +75,8 @@ export default class Index extends Component {
         onLoadMore={this.loadMore}
         noMore={noMore}
         hasMore={hasMore}
+        hasMoreText='loading'
+        noMoreText='no more'
         refresherConfig={refresherConfig}
       >
         <View className='main-container'>
