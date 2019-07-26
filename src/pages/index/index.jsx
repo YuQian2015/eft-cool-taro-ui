@@ -23,6 +23,7 @@ export default class Index extends Component {
 
   componentDidMount() {
     Taro.eventCenter.trigger('ERefreshStart')
+    // 模拟请求
     setTimeout(() => {
       Taro.eventCenter.trigger('ERefreshEnd')
       this.setState({
@@ -38,10 +39,24 @@ export default class Index extends Component {
   componentDidHide() { }
 
   refresh = () => {
+    this.setState({
+      refreshStatus: 1
+    })
     Taro.showToast({
       title: '刷新',
       icon: 'none'
     })
+    // 模拟请求
+    setTimeout(() => {
+      this.setState({
+        refreshStatus: 2
+      })
+    }, Math.random() * 1000)
+  }
+  refreshLater = () => {
+    setTimeout(() => {
+      this.refresh()
+    }, 1000)
   }
 
   loadMore = () => {
@@ -50,18 +65,16 @@ export default class Index extends Component {
         hasMore: false,
         noMore: true
       })
-    }, 2000)
+    }, 1000)
   }
 
   render() {
-    const { noMore, hasMore } = this.state
-    const header = <View className='header-container'> 
-      <View style={{textAlign: 'center'}}>顶部固定区域</View>
+    const { noMore, hasMore, refreshStatus } = this.state
+    const header = <View className='header-container'>
+      <View style={{ textAlign: 'center' }}>顶部固定区域</View>
     </View>
     const footer = <View className='footer-container'>
-      <View style={{textAlign: 'center'}}>底部固定区域</View>
-      <EButton circle>按钮一</EButton>
-      <EButton outline circle>按钮二</EButton>
+      <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
     </View>
     const refresherConfig = {
       recoverTime: 300,
@@ -76,8 +89,8 @@ export default class Index extends Component {
         noMore={noMore}
         hasMore={hasMore}
         hasMoreText='loading'
-        noMoreText='no more'
         refresherConfig={refresherConfig}
+        refreshStatus={refreshStatus}
       >
         <View className='main-container'>
           <View> Content </View>

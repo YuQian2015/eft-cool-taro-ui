@@ -65,6 +65,15 @@ export default class EContent extends Component {
     Taro.eventCenter.off('blur', this.blur)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.refreshStatus === 2) {
+      this.doRecover(true)
+    }
+    if(nextProps.refreshStatus === 1) {
+      this.showRefresh()
+    }
+  }
+
   /**
  * 触发加载更多
  *
@@ -159,7 +168,7 @@ export default class EContent extends Component {
     this.start_p = e.touches[0];
   }
   touchmove = (e) => {
-    if (this.props.disabledRefresh) {
+    if (this.refresherConfig.disabled) {
       return
     }
     if (this.state.isRefreshing) {
@@ -233,21 +242,23 @@ export default class EContent extends Component {
     }
     this.recover()
   }
-  doRecover = () => {
-    this.setState({
-      dragState: 0,
-      dragStyle: {
-        top: 0 + 'px',
-        transition: `all ${this.refresherConfig.recoverTime}ms`
-      },
-      downDragStyle: {
-        height: 0 + 'px',
-        transition: `all ${this.refresherConfig.recoverTime}ms`
-      },
-      scrollY: true,
-      isRefreshing: false,
-      textStatus: 0
-    })
+  doRecover = (force) => {
+    if(this.props.refreshStatus !== 1 || force) {
+      this.setState({
+        dragState: 0,
+        dragStyle: {
+          top: 0 + 'px',
+          transition: `all ${this.refresherConfig.recoverTime}ms`
+        },
+        downDragStyle: {
+          height: 0 + 'px',
+          transition: `all ${this.refresherConfig.recoverTime}ms`
+        },
+        scrollY: true,
+        isRefreshing: false,
+        textStatus: 0
+      })
+    }
   }
   recover() {//还原初始设置
     const refreshLimit = this.refresherConfig.refreshTime - (new Date - this.startTime)

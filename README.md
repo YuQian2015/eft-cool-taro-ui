@@ -45,6 +45,7 @@ export default class Index extends Component {
 
   componentDidMount() {
     Taro.eventCenter.trigger('ERefreshStart')
+    // 模拟请求
     setTimeout(() => {
       Taro.eventCenter.trigger('ERefreshEnd')
       this.setState({
@@ -60,10 +61,24 @@ export default class Index extends Component {
   componentDidHide() { }
 
   refresh = () => {
+    this.setState({
+      refreshStatus: 1
+    })
     Taro.showToast({
       title: '刷新',
       icon: 'none'
     })
+    // 模拟请求
+    setTimeout(() => {
+      this.setState({
+        refreshStatus: 2
+      })
+    }, Math.random() * 1000)
+  }
+  refreshLater = () => {
+    setTimeout(() => {
+      this.refresh()
+    }, 1000)
   }
 
   loadMore = () => {
@@ -72,18 +87,17 @@ export default class Index extends Component {
         hasMore: false,
         noMore: true
       })
-    }, 2000)
+    }, 1000)
   }
 
   render() {
-    const { noMore, hasMore } = this.state
-    const header = <View className='header-container'> 
-      <View style={{textAlign: 'center'}}>顶部固定区域</View>
+    const { noMore, hasMore, refreshStatus } = this.state
+    const header = <View className='header-container'>
+      <View style={{ textAlign: 'center' }}>顶部固定区域</View>
     </View>
     const footer = <View className='footer-container'>
-      <View style={{textAlign: 'center'}}>底部固定区域</View>
-      <EButton circle>按钮一</EButton>
-      <EButton outline circle>按钮二</EButton>
+      <View style={{ textAlign: 'center' }}>底部固定区域</View>
+      <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
     </View>
     const refresherConfig = {
       recoverTime: 300,
@@ -98,8 +112,8 @@ export default class Index extends Component {
         noMore={noMore}
         hasMore={hasMore}
         hasMoreText='loading'
-        noMoreText='no more'
         refresherConfig={refresherConfig}
+        refreshStatus={refreshStatus}
       >
         <View className='main-container'>
           <View> Content </View>
@@ -108,47 +122,46 @@ export default class Index extends Component {
     )
   }
 }
+
 ```
 
 ### props
 
-| props             | propTypes | 描述                         | 默认值                    |
-| ----------------- | --------- | ---------------------------- | ------------------------- |
-| className         | string    | 自定义样式名                 | -                         |
-| renderHeader      | element   | 顶部元素                     | -                         |
-| renderFooter      | element   | 底部元素                     | -                         |
-| onRefresh         | func      | 下拉刷新回调函数             | -                         |
-| onLoadMore        | func      | 滚动到底部加载更多           | -                         |
-| onScroll          | func      | 滚动事件                     | -                         |
-| hasMore           | bool      | 是否能够加载更多             | -                         |
-| noMore            | bool      | 显示没有更多                 | -                         |
-| hasMoreText       | string    | 自定义加载更多文字           | '加载中'                  |
-| noMoreText        | string    | 自定义没有更多文字           | '没有更多了'              |
-| refresherConfig   | object    | 设置加载动画效果             | 详见 refresherConfig 描述 |
-| loadMoreThreshold | number    | 滚动底部多少距离开始加载更多 | 100                       |
+| props             | propTypes | 描述                          | 默认值                    |
+| ----------------- | --------- | ----------------------------- | ------------------------- |
+| className         | string    | 自定义样式名                  | -                         |
+| renderHeader      | element   | 顶部元素                      | -                         |
+| renderFooter      | element   | 底部元素                      | -                         |
+| onRefresh         | func      | 下拉刷新回调函数              | -                         |
+| onLoadMore        | func      | 滚动到底部加载更多            | -                         |
+| onScroll          | func      | 滚动事件                      | -                         |
+| hasMore           | bool      | 是否能够加载更多              | -                         |
+| noMore            | bool      | 显示没有更多                  | -                         |
+| hasMoreText       | string    | 自定义加载更多文字            | '加载中'                  |
+| noMoreText        | string    | 自定义没有更多文字            | '没有更多了'              |
+| refresherConfig   | object    | 设置加载动画效果              | 详见 refresherConfig 描述 |
+| refreshStatus     | number    | 刷新动画1：刷新中 2：刷新完成 | -                         |
+| loadMoreThreshold | number    | 滚动底部多少距离开始加载更多  | 100                       |
 
 ###  refresherConfig
 
-| 属性        | 类型   | 默认值                             | 描述                                           |
-| ----------- | ------ | ---------------------------------- | ---------------------------------------------- |
-| recoverTime | number | 300                                | 回弹动画的时间 ms                              |
-| refreshTime | number | 500                                | 刷新动画至少显示的时间 ms （用来展示刷新动画） |
-| threshold   | number | 70                                 | 刷新的阈值（低于这个值的时候不执行刷新）       |
-| maxHeight   | number | 200                                | 可拉动的最大高度                               |
-| height      | number | 60                                 | 刷新动画播放时占的高度                         |
-| showText    | bool   | true                               | 显示文字                                       |
-| refreshText | array  | ['下拉刷新', '释放刷新', '加载中'] | 刷新文字                                       |
+| 属性        | 类型   | 默认值                             | 描述                                                         |
+| ----------- | ------ | ---------------------------------- | ------------------------------------------------------------ |
+| recoverTime | number | 300                                | 回弹动画的时间 ms                                            |
+| refreshTime | number | 500                                | 刷新动画至少显示的时间 ms （用来展示刷新动画， refreshStatus 为 1 时不生效） |
+| threshold   | number | 70                                 | 刷新的阈值（低于这个值的时候不执行刷新）                     |
+| maxHeight   | number | 200                                | 可拉动的最大高度                                             |
+| height      | number | 60                                 | 刷新动画播放时占的高度                                       |
+| showText    | bool   | true                               | 显示文字                                                     |
+| refreshText | array  | ['下拉刷新', '释放刷新', '加载中'] | 刷新文字                                                     |
+| disabled    | bool   | false                              | 禁用刷新                                                     |
 
-###  自动显示刷新
-
-`EPage` 支持通过事件来显示和隐藏刷新动画，使得我们能够在网络请求 的同时（如：拦截器）显示刷新：
+`EPage` 支持通过事件来显示和隐藏刷新动画：
 
 ```jsx
 Taro.eventCenter.trigger('ERefreshStart') // 显示刷新
 Taro.eventCenter.trigger('ERefreshEnd') // 隐藏刷新
 ```
-
-
 
 ## 其它组件和props
 
@@ -163,7 +176,7 @@ Taro.eventCenter.trigger('ERefreshEnd') // 隐藏刷新
 | size  | number    | 大小                | 10        |
 | color | string    | 颜色，如：’#01A0FF‘ | ‘#FFFFFF’ |
 
-###EButton
+### EButton
 
 按钮组件
 

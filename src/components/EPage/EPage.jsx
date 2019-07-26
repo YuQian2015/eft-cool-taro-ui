@@ -22,6 +22,7 @@ export default class EPage extends Component {
           loadMoreThreshold={this.props.loadMoreThreshold}
           noMoreText={this.props.noMoreText}
           hasMoreText={this.props.hasMoreText}
+          refreshStatus={this.props.refreshStatus}
           refresherConfig={this.props.refresherConfig || {}}
         >{this.props.children}</EContent>
         <EFooter>{this.props.renderFooter}</EFooter>
@@ -42,6 +43,7 @@ EPage.propTypes = {
   noMore: PropTypes.bool,
   noMoreText: PropTypes.string,
   hasMoreText: PropTypes.string,
+  refreshStatus: PropTypes.number,
   refresherConfig: PropTypes.shape({
       recoverTime:  PropTypes.number,
       refreshTime: PropTypes.number,
