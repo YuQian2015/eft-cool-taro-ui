@@ -310,17 +310,13 @@ export default class EContent extends Component {
   render() {
     const { dragStyle, downDragStyle, dragComplete, textStatus,
       footerHeight, headerHeight, isRefreshing, focus } = this.state;
-    const { loading, hasMore, onScrollToLower, children, loadMoreThreshold, hasMoreText, noMoreText } = this.props
+    const { loading, hasMore, noMore, onScrollToLower, children, loadMoreThreshold, hasMoreText, noMoreText } = this.props
 
-    // const bottom = noMore
-    //   ? renderNoMore || <View className='no-more'> 没有更多了 </View>
-    //   : hasMore
-    //     ? renderHasMore || <View className='load-more'> 加载中 </View>
-    //     : null
-
-    const bottom = this.props.noMore
+    const bottom = noMore
       ? <View className='no-more'>{noMoreText || '没有更多了'}</View>
-      : <View className='load-more'>{hasMoreText || '加载中'}</View>
+      : hasMore
+        ? <View className='load-more'>{hasMoreText || '加载中'}</View>
+        : null
     return (
       <View className='EContent' style={{ height: `${windowHeight - footerHeight - headerHeight}px` }}>
         <View className='refresher' style={downDragStyle}>
