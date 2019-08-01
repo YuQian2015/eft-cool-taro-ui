@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 
-import { EButton, EPage } from '../../components'
+import { EButton, EPage, EModal } from '../../components'
 
 import './index.scss'
 
@@ -68,8 +68,14 @@ export default class Index extends Component {
     }, 1000)
   }
 
+  openModel = () => {
+    this.setState({
+      open: true
+    })
+  }
+
   render() {
-    const { noMore, hasMore, refreshStatus } = this.state
+    const { noMore, hasMore, refreshStatus, open } = this.state
     const header = <View className='header-container'>
       <View style={{ textAlign: 'center' }}>顶部固定区域</View>
     </View>
@@ -81,21 +87,27 @@ export default class Index extends Component {
       refreshTime: 1000
     }
     return (
-      <EPage
-        renderHeader={header}
-        renderFooter={footer}
-        onRefresh={this.refresh}
-        onLoadMore={this.loadMore}
-        noMore={noMore}
-        hasMore={hasMore}
-        hasMoreText='loading'
-        refresherConfig={refresherConfig}
-        refreshStatus={refreshStatus}
-      >
-        <View className='main-container'>
-          <View> Content </View>
-        </View>
-      </EPage>
+      <View>
+        <EModal openModel={open} showMask={false} position='right'>
+          <View>model</View>
+        </EModal>
+        <EPage
+          renderHeader={header}
+          renderFooter={footer}
+          onRefresh={this.refresh}
+          onLoadMore={this.loadMore}
+          noMore={noMore}
+          hasMore={hasMore}
+          hasMoreText='loading'
+          refresherConfig={refresherConfig}
+          refreshStatus={refreshStatus}
+        >
+          <View className='main-container'>
+            <View> Content </View>
+            <EButton onClick={this.openModel}>显示modal</EButton>
+          </View>
+        </EPage>
+      </View>
     )
   }
 }
