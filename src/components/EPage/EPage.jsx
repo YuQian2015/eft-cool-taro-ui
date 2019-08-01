@@ -8,6 +8,9 @@ import EFooter from '../EFooter/EFooter'
 
 export default class EPage extends Component {
 
+  static options = {
+    addGlobalClass: true
+  }
 
   render() {
     return (

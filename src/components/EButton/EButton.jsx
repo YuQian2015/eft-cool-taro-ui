@@ -3,9 +3,13 @@ import { View } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import EActivityIndicator from '../EActivityIndicator/EActivityIndicator'
 
-import './EButton.scss'
 
 export default class EButton extends Component {
+  
+  static options = {
+    addGlobalClass: true
+  }
+
   constructor() {
     super(...arguments)
   }

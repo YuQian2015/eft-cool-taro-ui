@@ -18,7 +18,13 @@ $ yarn add eft-cool-taro-ui
 $ npm i eft-cool-taro-ui --save
 ```
 
-在页面中引入：
+然后在app.scss引入样式：
+
+```scss
+@import '~eft-cool-taro-ui/style/index.scss';
+```
+
+最后在页面中使用：
 
 ```jsx
 import Taro, { Component } from '@tarojs/taro'

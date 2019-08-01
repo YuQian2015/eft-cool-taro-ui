@@ -2,6 +2,11 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 
 export default class EHeader extends Component {
+
+  static options = {
+    addGlobalClass: true
+  }
+
   componentDidMount () {
     this.countHeight()
   }

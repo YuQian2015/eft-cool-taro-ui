@@ -3,7 +3,6 @@ import { View, ScrollView } from '@tarojs/components'
 import PropTypes from 'prop-types'
 import ERefresher from '../ERefresher/ERefresher'
 import { throttle, vibrateShort } from '../../utils'
-import './EContent.scss'
 
 let windowHeight = Taro.getSystemInfoSync().windowHeight
 
@@ -13,6 +12,11 @@ let windowHeight = Taro.getSystemInfoSync().windowHeight
  * ESetHeader、ESetFooter、ERefreshStart、ERefreshEnd、
  */
 export default class EContent extends Component {
+  
+  static options = {
+    addGlobalClass: true
+  }
+
   constructor() {
     super(...arguments)
     this.state = {

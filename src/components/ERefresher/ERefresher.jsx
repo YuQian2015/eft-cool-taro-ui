@@ -1,9 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 
-import './Refresher.scss'
-
 class Refresher extends Component {
+
+  static options = {
+    addGlobalClass: true
+  }
+
   constructor() {
     super(...arguments)
     this.state = {

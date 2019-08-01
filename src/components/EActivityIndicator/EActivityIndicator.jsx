@@ -2,9 +2,12 @@ import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import PropTypes from 'prop-types'
 
-import './EActivityIndicator.scss'
-
 export default class EActivityIndicator extends Component {
+
+  static options = {
+    addGlobalClass: true
+  }
+
   constructor() {
     super(...arguments)
   }

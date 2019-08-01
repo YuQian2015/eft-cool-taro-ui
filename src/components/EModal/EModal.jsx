@@ -2,9 +2,12 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import PropTypes from 'prop-types'
 
-import './EModal.scss'
-
 class EModal extends Component {
+
+  static options = {
+    addGlobalClass: true
+  }
+
   static defaultProps = {
     open: false
   }
