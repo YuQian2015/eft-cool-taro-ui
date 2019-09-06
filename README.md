@@ -33,6 +33,7 @@ import { EButton, EPage, EModal, ENavbar } from 'eft-cool-taro-ui'
 
 import './index.scss'
 
+
 export default class Index extends Component {
 
   config = {
@@ -43,7 +44,8 @@ export default class Index extends Component {
     super()
     this.state = {
       noMore: false,
-      hasMore: true
+      hasMore: true,
+      scrollTop: 0
     }
   }
 
@@ -108,8 +110,19 @@ export default class Index extends Component {
     })
   }
 
+  toTop = () => {
+    this.setState({
+      scrollTop: 0
+    })
+  }
+
+  handleScrollEnd = (e) => {
+    this.setState({
+      scrollTop: e.detail.scrollTop
+    })
+  }
   render() {
-    const { noMore, hasMore, refreshStatus, open } = this.state
+    const { noMore, hasMore, refreshStatus, open, scrollTop } = this.state
     const header = <View className='header-container'>
       <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel}>首页</ENavbar>
     </View>
@@ -135,17 +148,19 @@ export default class Index extends Component {
           hasMoreText='loading'
           refresherConfig={refresherConfig}
           refreshStatus={refreshStatus}
+          scrollTop={scrollTop}
+          onScrollEnd={this.handleScrollEnd}
         >
           <View className='main-container'>
             <View> Content </View>
             <EButton onClick={this.openModel}>显示modal</EButton>
+            <EButton onClick={this.toTop}>回到顶部</EButton>
           </View>
         </EPage>
       </View>
     )
   }
 }
-
 
 ```
 
@@ -159,6 +174,8 @@ export default class Index extends Component {
 | onRefresh         | func      | 下拉刷新回调函数              | -                         |
 | onLoadMore        | func      | 滚动到底部加载更多            | -                         |
 | onScroll          | func      | 滚动事件                      | -                         |
+| scrollTop         | number    | 设置竖向滚动条位置            | 0                         |
+| onScrollEnd       | func      | 滚动结束触发                  | -                         |
 | hasMore           | bool      | 是否能够加载更多              | -                         |
 | noMore            | bool      | 显示没有更多                  | -                         |
 | hasMoreText       | string    | 自定义加载更多文字            | '加载中'                  |

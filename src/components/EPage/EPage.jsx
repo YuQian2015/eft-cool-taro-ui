@@ -20,6 +20,7 @@ export default class EPage extends Component {
           onRefresh={this.props.onRefresh}
           onScrollToLower={this.props.onLoadMore}
           onScroll={this.props.onScroll}
+          onScrollEnd={this.props.onScrollEnd}
           hasMore={this.props.hasMore}
           noMore={this.props.noMore}
           loadMoreThreshold={this.props.loadMoreThreshold}
@@ -27,6 +28,7 @@ export default class EPage extends Component {
           hasMoreText={this.props.hasMoreText}
           refreshStatus={this.props.refreshStatus}
           refresherConfig={this.props.refresherConfig || {}}
+          scrollTop={this.props.scrollTop}
         >{this.props.children}</EContent>
         <EFooter>{this.props.renderFooter}</EFooter>
       </View>
@@ -41,6 +43,8 @@ EPage.propTypes = {
   onRefresh: PropTypes.func,
   onLoadMore: PropTypes.func,
   onScroll: PropTypes.func,
+  onScrollEnd: PropTypes.func,
+  scrollTop: PropTypes.number,
   loadMoreThreshold: PropTypes.number,
   hasMore: PropTypes.bool,
   noMore: PropTypes.bool,

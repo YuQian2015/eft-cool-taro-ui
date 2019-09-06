@@ -47,6 +47,7 @@ export default class EContent extends Component {
       refreshText: ['下拉刷新', '释放刷新', '加载中'], // 刷新文字
       ...this.props.refresherConfig
     }
+    this.scrollTop = this.props.scrollTop || 0
   }
 
   componentWillMount() {
@@ -70,6 +71,9 @@ export default class EContent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if(this.scrollTop != nextProps.scrollTop) {
+      this.scrollTop = nextProps.scrollTop
+    }
     if(nextProps.refreshStatus === 2) {
       this.doRecover(true)
     }
@@ -97,15 +101,24 @@ export default class EContent extends Component {
     // console.log('滚动到顶部事件')
   }
   onScroll = (e) => {
-    const { scrollTop } = e.detail;
-    const { onScrollUp, onScrollDown, onScroll } = this.props;
-    this.isTop = scrollTop <= 80 // 滚动到了顶部
+    const { scrollTop } = e.detail
+    this.scrollTop = scrollTop
+    const { onScrollUp, onScrollDown, onScroll, onScrollEnd } = this.props
+    this.isTop = scrollTop <= 60 // 滚动到了顶部
     // deltaY在微信小程序适用
     if (scrollTop > 200) {
       onScrollUp && onScrollUp()
     } else {
       onScrollDown && onScrollDown()
     }
+
+    throttle({
+      method: () => {
+        onScrollEnd && onScrollEnd(e)
+      },
+      delay: 100,
+      type: 'scrollEnd'
+    })
 
     onScroll && onScroll(e)
 
@@ -346,6 +359,7 @@ export default class EContent extends Component {
           className='scroll-content'
           scrollY
           scrollWithAnimation
+          scrollTop={this.scrollTop}
         >
           {children}
           {bottom}

@@ -15,7 +15,8 @@ export default class Index extends Component {
     super()
     this.state = {
       noMore: false,
-      hasMore: true
+      hasMore: true,
+      scrollTop: 0
     }
   }
 
@@ -80,8 +81,19 @@ export default class Index extends Component {
     })
   }
 
+  toTop = () => {
+    this.setState({
+      scrollTop: 0
+    })
+  }
+
+  handleScrollEnd = (e) => {
+    this.setState({
+      scrollTop: e.detail.scrollTop
+    })
+  }
   render() {
-    const { noMore, hasMore, refreshStatus, open } = this.state
+    const { noMore, hasMore, refreshStatus, open, scrollTop } = this.state
     const header = <View className='header-container'>
       <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel}>首页</ENavbar>
     </View>
@@ -107,10 +119,13 @@ export default class Index extends Component {
           hasMoreText='loading'
           refresherConfig={refresherConfig}
           refreshStatus={refreshStatus}
+          scrollTop={scrollTop}
+          onScrollEnd={this.handleScrollEnd}
         >
           <View className='main-container'>
             <View> Content </View>
             <EButton onClick={this.openModel}>显示modal</EButton>
+            <EButton onClick={this.toTop}>回到顶部</EButton>
           </View>
         </EPage>
       </View>
