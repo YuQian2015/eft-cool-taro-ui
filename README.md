@@ -29,7 +29,7 @@ $ npm i eft-cool-taro-ui --save
 ```jsx
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { EButton, EPage } from 'eft-cool-taro-ui'
+import { EButton, EPage, EModal, ENavbar } from 'eft-cool-taro-ui'
 
 import './index.scss'
 
@@ -96,13 +96,24 @@ export default class Index extends Component {
     }, 1000)
   }
 
+  openModel = () => {
+    this.setState({
+      open: true
+    })
+  }
+
+  hideModal = () => {
+    this.setState({
+      open: false
+    })
+  }
+
   render() {
-    const { noMore, hasMore, refreshStatus } = this.state
+    const { noMore, hasMore, refreshStatus, open } = this.state
     const header = <View className='header-container'>
-      <View style={{ textAlign: 'center' }}>顶部固定区域</View>
+      <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel}>首页</ENavbar>
     </View>
     const footer = <View className='footer-container'>
-      <View style={{ textAlign: 'center' }}>底部固定区域</View>
       <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
     </View>
     const refresherConfig = {
@@ -110,24 +121,31 @@ export default class Index extends Component {
       refreshTime: 1000
     }
     return (
-      <EPage
-        renderHeader={header}
-        renderFooter={footer}
-        onRefresh={this.refresh}
-        onLoadMore={this.loadMore}
-        noMore={noMore}
-        hasMore={hasMore}
-        hasMoreText='loading'
-        refresherConfig={refresherConfig}
-        refreshStatus={refreshStatus}
-      >
-        <View className='main-container'>
-          <View> Content </View>
-        </View>
-      </EPage>
+      <View>
+        <EModal openModel={open} position='right' onHide={this.hideModal}>
+          <View>model</View>
+        </EModal>
+        <EPage
+          renderHeader={header}
+          renderFooter={footer}
+          onRefresh={this.refresh}
+          onLoadMore={this.loadMore}
+          noMore={noMore}
+          hasMore={hasMore}
+          hasMoreText='loading'
+          refresherConfig={refresherConfig}
+          refreshStatus={refreshStatus}
+        >
+          <View className='main-container'>
+            <View> Content </View>
+            <EButton onClick={this.openModel}>显示modal</EButton>
+          </View>
+        </EPage>
+      </View>
     )
   }
 }
+
 
 ```
 
@@ -169,9 +187,31 @@ Taro.eventCenter.trigger('ERefreshStart') // 显示刷新
 Taro.eventCenter.trigger('ERefreshEnd') // 隐藏刷新
 ```
 
-## 其它组件和props
+## 组件和props
 
 正在更新完善……
+
+### EModal
+
+滑出一个模态框
+
+| props     | propTypes | 描述                                                      | 默认值   |
+| --------- | --------- | --------------------------------------------------------- | -------- |
+| openModel | bool      | 是否显示                                                  | false    |
+| showMask  | bool      | 是否显示灰色背景                                          | true     |
+| position  | string    | 模态框出现的方向： ‘bottom’ \| ‘top’ \| ‘left’ \| ‘right’ | 'bottom' |
+| onHide    | func      | 关闭模态框调用                                            | -        |
+
+### ENavbar
+
+导航栏组件
+
+| props            | propTypes | 描述           | 默认值 |
+| ---------------- | --------- | -------------- | ------ |
+| title            | string    | 导航栏标题     | ‘’     |
+| leftText         | string    | 左边文字       | ‘’     |
+| rightText        | string    | 右边文字       | ''     |
+| onClickRightText | func      | 点击右边的文字 | -      |
 
 ### EActivityIndicator
 

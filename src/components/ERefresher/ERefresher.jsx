@@ -18,11 +18,14 @@ class Refresher extends Component {
     const { baseSize } = this.state;
     const start = 70;
     const centerSize = {
-      transform: this.props.complete > start ? `scale(${(this.props.complete - start) * 0.045 + .25})` : `scale(0.25)`
+      transform: this.props.complete > start ? `scale(${(this.props.complete - start) * 0.045 + .25})` : `scale(0.25)`,
+      "-webkit-transform": this.props.complete > start ? `scale(${(this.props.complete - start) * 0.045 + .25})` : `scale(0.25)`
     }
     return (
       <View className='Refresher'>
-        <View className='spot' style={{ transform: `translate3d(${this.props.complete * baseSize}px,0,0) scale(0.25)` }}></View>
+        <View className='spot' style={{
+          transform: `translate3d(${this.props.complete * baseSize}px,0,0) scale(0.25)`,
+          "-webkit-transform": `translate3d(${this.props.complete * baseSize}px,0,0) scale(0.25)` }}></View>
         <View className='spot center' style={centerSize}>
           {
             this.props.complete == 100
@@ -32,7 +35,9 @@ class Refresher extends Component {
               : null
           }
         </View>
-        <View className='spot' style={{ transform: `translate3d(${-this.props.complete * baseSize}px,0,0) scale(0.25)` }}></View>
+        <View className='spot' style={{
+          transform: `translate3d(${-this.props.complete * baseSize}px,0,0) scale(0.25)`,
+          "-webkit-transform": `translate3d(${-this.props.complete * baseSize}px,0,0) scale(0.25)` }}></View>
       </View>
     )
   }

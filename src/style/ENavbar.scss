@@ -1,0 +1,44 @@
+.ENavbar {
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+
+    .navbar-left,
+    .navbar-right {
+        flex: 2;
+        height: 100%;
+        color: $color-text-navbar;
+        overflow: hidden;
+        line-height: 88px;
+        font-size: 36px;
+        padding: 0 10px;
+        text-overflow: ellipsis;
+    }
+
+    .navbar-left {
+        text-align: left;
+    }
+
+    .navbar-title {
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 5;
+        text-align: center;
+        font-size: 36px;
+        color: $color-text-navbar;
+        line-height: 1.2;
+        font-weight: 700;
+    }
+
+    .navbar-right {
+        text-align: right;
+    }
+}

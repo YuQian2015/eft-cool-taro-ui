@@ -9,7 +9,8 @@ class EModal extends Component {
   }
 
   static defaultProps = {
-    open: false
+    openModel: false,
+    showMask: true
   }
 
   constructor() {
@@ -29,6 +30,8 @@ class EModal extends Component {
     this.setState({
       show: false
     })
+    const { onHide } = this.props
+    onHide && onHide()
   }
 
   render() {
@@ -62,4 +65,5 @@ export default EModal
 EModal.propTypes = {
   openModel: PropTypes.bool,
   showMask: PropTypes.bool,
+  onHide: PropTypes.func,
 }

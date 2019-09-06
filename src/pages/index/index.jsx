@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 
-import { EButton, EPage, EModal } from '../../components'
+import { EButton, EPage, EModal, ENavbar } from '../../components'
 
 import './index.scss'
 
@@ -74,10 +74,16 @@ export default class Index extends Component {
     })
   }
 
+  hideModal = () => {
+    this.setState({
+      open: false
+    })
+  }
+
   render() {
     const { noMore, hasMore, refreshStatus, open } = this.state
     const header = <View className='header-container'>
-      <View style={{ textAlign: 'center' }}>顶部固定区域</View>
+      <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel}>首页</ENavbar>
     </View>
     const footer = <View className='footer-container'>
       <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
@@ -88,7 +94,7 @@ export default class Index extends Component {
     }
     return (
       <View>
-        <EModal openModel={open} showMask={false} position='right'>
+        <EModal openModel={open} position='right' onHide={this.hideModal}>
           <View>model</View>
         </EModal>
         <EPage
