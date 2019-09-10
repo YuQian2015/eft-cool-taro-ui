@@ -125,6 +125,14 @@ export default class Index extends Component {
           <View className='main-container'>
             <View> Content </View>
             <EButton onClick={this.openModel}>显示modal</EButton>
+            <View style={{height: '30px'}}>content</View>
+            <View style={{height: '300px'}}>content</View>
+            <View style={{height: '300px'}}>content</View>
+            <View style={{height: '300px'}}>content</View>
+            <View style={{height: '300px'}}>content</View>
+            <EButton onClick={this.openModel}>显示modal</EButton>
+            <EButton onClick={this.openModel}>显示modal</EButton>
+            <EButton onClick={this.openModel}>显示modal</EButton>
             <EButton onClick={this.toTop}>回到顶部</EButton>
           </View>
         </EPage>

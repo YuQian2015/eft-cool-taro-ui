@@ -102,7 +102,7 @@ export default class EContent extends Component {
   }
   onScroll = (e) => {
     const { scrollTop } = e.detail
-    this.scrollTop = scrollTop
+    // this.scrollTop = scrollTop // 修复滚动不流畅的问题
     const { onScrollUp, onScrollDown, onScroll, onScrollEnd } = this.props
     this.isTop = scrollTop <= 60 // 滚动到了顶部
     // deltaY在微信小程序适用
