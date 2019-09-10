@@ -12,7 +12,7 @@ let windowHeight = Taro.getSystemInfoSync().windowHeight
  * ESetHeader、ESetFooter、ERefreshStart、ERefreshEnd、
  */
 export default class EContent extends Component {
-  
+
   static options = {
     addGlobalClass: true
   }
@@ -71,13 +71,13 @@ export default class EContent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.scrollTop != nextProps.scrollTop) {
+    if (this.scrollTop != nextProps.scrollTop) {
       this.scrollTop = nextProps.scrollTop
     }
-    if(nextProps.refreshStatus === 2) {
+    if (nextProps.refreshStatus === 2) {
       this.doRecover(true)
     }
-    if(nextProps.refreshStatus === 1) {
+    if (nextProps.refreshStatus === 1) {
       this.showRefresh()
     }
   }
@@ -102,7 +102,9 @@ export default class EContent extends Component {
   }
   onScroll = (e) => {
     const { scrollTop } = e.detail
-    // this.scrollTop = scrollTop // 修复滚动不流畅的问题
+    if (process.env.TARO_ENV === 'h5') {
+      this.scrollTop = scrollTop // 修复滚动不流畅的问题
+    }
     const { onScrollUp, onScrollDown, onScroll, onScrollEnd } = this.props
     this.isTop = scrollTop <= 60 // 滚动到了顶部
     // deltaY在微信小程序适用
@@ -260,7 +262,7 @@ export default class EContent extends Component {
     this.recover()
   }
   doRecover = (force) => {
-    if(this.props.refreshStatus !== 1 || force) {
+    if (this.props.refreshStatus !== 1 || force) {
       this.setState({
         dragState: 0,
         dragStyle: {
