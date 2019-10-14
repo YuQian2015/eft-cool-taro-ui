@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import PropTypes from 'prop-types'
 
 export default class ENavbar extends Component {
@@ -12,11 +12,21 @@ export default class ENavbar extends Component {
     const { onClickRightText } = this.props
     onClickRightText && onClickRightText(e)
   }
+
+  goBack = () => {
+    const { onClickLeft } = this.props
+    if (onClickLeft && onClickLeft()) {
+      Taro.navigateBack()
+      return
+    }
+    Taro.navigateBack()
+  }
+
   render() {
     return (
       <View className='ENavbar'>
-        <View className='navbar-left'>
-          {this.props.leftText}
+        <View className='navbar-left' onClick={this.goBack}>
+          <Text className="exe exe-return"></Text>{this.props.leftText}
         </View>
         <View className='navbar-title'>
           {this.props.children}
@@ -34,4 +44,5 @@ ENavbar.propTypes = {
   leftText: PropTypes.string, // 左边文字
   rightText: PropTypes.string, // 右边文字
   onClickRightText: PropTypes.func, // 点击右边文字
+  onClickLeft: PropTypes.func, // 点击左边
 }

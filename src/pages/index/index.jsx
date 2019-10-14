@@ -92,10 +92,14 @@ export default class Index extends Component {
       scrollTop: e.detail.scrollTop
     })
   }
+
+  goBack = () => {
+    return true
+  }
   render() {
     const { noMore, hasMore, refreshStatus, open, scrollTop } = this.state
     const header = <View className='header-container'>
-      <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel}>首页</ENavbar>
+      <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel} onClickLeft={this.goBack} >首页</ENavbar>
     </View>
     const footer = <View className='footer-container'>
       <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
