@@ -225,7 +225,6 @@ Taro.eventCenter.trigger('ERefreshEnd') // 隐藏刷新
 
 | props            | propTypes | 描述                                                         | 默认值 |
 | ---------------- | --------- | ------------------------------------------------------------ | ------ |
-| title            | string    | 导航栏标题                                                   | ‘’     |
 | leftText         | string    | 左边文字                                                     | ‘’     |
 | rightText        | string    | 右边文字                                                     | ''     |
 | onClickRightText | func      | 点击右边的文字                                               | -      |
