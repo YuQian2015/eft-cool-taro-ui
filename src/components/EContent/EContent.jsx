@@ -336,8 +336,17 @@ export default class EContent extends Component {
       : hasMore
         ? <View className='load-more'>{hasMoreText || '加载中'}</View>
         : null
+
+    let tabBarBottom = 0
+
+    if (process.env.TARO_ENV === 'h5') {
+      if (document.querySelector('.taro-tabbar__tabbar-bottom')) {
+        tabBarBottom = document.querySelector('.taro-tabbar__tabbar-bottom').clientHeight
+      }
+    }
+
     return (
-      <View className='EContent' style={{ height: `${windowHeight - footerHeight - headerHeight}px` }}>
+      <View className='EContent' style={{ height: `${windowHeight - footerHeight - headerHeight - tabBarBottom}px` }}>
         <View className='refresher' style={downDragStyle}>
           <View className='refresher-holder'>
             <ERefresher complete={dragComplete} isRefreshing={isRefreshing} />

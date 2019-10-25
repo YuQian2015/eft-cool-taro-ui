@@ -15,11 +15,9 @@ export default class ENavbar extends Component {
 
   goBack = () => {
     const { onClickLeft } = this.props
-    if (onClickLeft && onClickLeft()) {
+    if ((onClickLeft && onClickLeft()) || !onClickLeft) {
       Taro.navigateBack()
-      return
     }
-    Taro.navigateBack()
   }
 
   render() {
