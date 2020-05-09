@@ -33,7 +33,6 @@ import { EButton, EPage, EModal, ENavbar } from 'eft-cool-taro-ui'
 
 import './index.scss'
 
-
 export default class Index extends Component {
 
   config = {
@@ -121,14 +120,14 @@ export default class Index extends Component {
       scrollTop: e.detail.scrollTop
     })
   }
+
+  goBack = () => {
+    return true
+  }
   render() {
     const { noMore, hasMore, refreshStatus, open, scrollTop } = this.state
-    const header = <View className='header-container'>
-      <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel}>首页</ENavbar>
-    </View>
-    const footer = <View className='footer-container'>
-      <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
-    </View>
+    const header = <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel} onClickLeft={this.goBack} >首页</ENavbar>
+    const footer = <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
     const refresherConfig = {
       recoverTime: 300,
       refreshTime: 1000
@@ -139,8 +138,8 @@ export default class Index extends Component {
           <View>model</View>
         </EModal>
         <EPage
-          renderHeader={header}
-          renderFooter={footer}
+          renderHeader={<View className='header-container'>{header}</View>}
+          renderFooter={<View className='footer-container'>{footer}</View>}
           onRefresh={this.refresh}
           onLoadMore={this.loadMore}
           noMore={noMore}
@@ -153,6 +152,14 @@ export default class Index extends Component {
         >
           <View className='main-container'>
             <View> Content </View>
+            <EButton onClick={this.openModel}>显示modal</EButton>
+            <View style={{ height: '30px' }}>content</View>
+            <View style={{ height: '300px' }}>content</View>
+            <View style={{ height: '300px' }}>content</View>
+            <View style={{ height: '300px' }}>content</View>
+            <View style={{ height: '300px' }}>content</View>
+            <EButton onClick={this.openModel}>显示modal</EButton>
+            <EButton onClick={this.openModel}>显示modal</EButton>
             <EButton onClick={this.openModel}>显示modal</EButton>
             <EButton onClick={this.toTop}>回到顶部</EButton>
           </View>
