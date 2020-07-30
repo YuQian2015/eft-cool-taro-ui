@@ -4,8 +4,6 @@ import PropTypes from 'prop-types'
 import ERefresher from '../ERefresher/ERefresher'
 import { throttle, vibrateShort } from '../../utils'
 
-let windowHeight = Taro.getSystemInfoSync().windowHeight
-
 /**
  * 监听 EContent 的事件
  * 针对刷新、内容高度、加载状态的控制
@@ -19,6 +17,7 @@ export default class EContent extends Component {
 
   constructor() {
     super(...arguments)
+    let windowHeight = Taro.getSystemInfoSync().windowHeight
     this.state = {
       dragStyle: { //下拉框的样式
         top: 0 + 'px'
@@ -29,6 +28,7 @@ export default class EContent extends Component {
       textStatus: 0,
       dragState: 0, //刷新状态 0不做操作 1刷新
       dragComplete: 0, // 拖拽状态的完成度
+      windowHeight,
       scrollY: true,
       footerHeight: 0,
       headerHeight: 0,
@@ -58,6 +58,8 @@ export default class EContent extends Component {
     Taro.eventCenter.on('ERefreshEnd', this.hideRefresh)
     Taro.eventCenter.on('focus', this.focus)
     Taro.eventCenter.on('blur', this.blur)
+
+    window.addEventListener('resize', this.onresize)
   }
 
   componentWillUnmount() {
@@ -68,6 +70,8 @@ export default class EContent extends Component {
     Taro.eventCenter.off('ERefreshEnd', this.hideRefresh)
     Taro.eventCenter.off('focus', this.focus)
     Taro.eventCenter.off('blur', this.blur)
+
+    window.removeEventListener('resize', this.onresize)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,6 +84,13 @@ export default class EContent extends Component {
     if (nextProps.refreshStatus === 1) {
       this.showRefresh()
     }
+  }
+
+  onresize = () => {
+    const windowHeight = Taro.getSystemInfoSync().windowHeight
+    this.setState({
+      windowHeight
+    })
   }
 
   /**
@@ -146,10 +157,11 @@ export default class EContent extends Component {
       method: () => {
         if (this.cacheHeader !== rect.height) {
           // console.log('计算header')
-          windowHeight = Taro.getSystemInfoSync().windowHeight
+          const windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheHeader = rect.height
           this.setState({
-            headerHeight: rect.height
+            headerHeight: rect.height,
+            windowHeight
           })
         }
       },
@@ -162,10 +174,11 @@ export default class EContent extends Component {
       method: () => {
         if (this.cacheFooter !== rect.height) {
           // console.log('计算footer')
-          windowHeight = Taro.getSystemInfoSync().windowHeight
+          const windowHeight = Taro.getSystemInfoSync().windowHeight
           this.cacheFooter = rect.height
           this.setState({
-            footerHeight: rect.height
+            footerHeight: rect.height,
+            windowHeight
           })
         }
       },
@@ -328,7 +341,7 @@ export default class EContent extends Component {
 
   render() {
     const { dragStyle, downDragStyle, dragComplete, textStatus,
-      footerHeight, headerHeight, isRefreshing, focus } = this.state;
+      footerHeight, headerHeight, isRefreshing, focus, windowHeight } = this.state;
     const { loading, hasMore, noMore, onScrollToLower, children, loadMoreThreshold, hasMoreText, noMoreText } = this.props
 
     const bottom = noMore

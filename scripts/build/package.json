@@ -1,6 +1,6 @@
 {
   "name": "eft-cool-taro-ui",
-  "version": "0.4.11",
+  "version": "0.5.1",
   "description": "EXE大前端团队Taro页面组件",
   "main": "index.js",
   "keywords": [
@@ -13,16 +13,16 @@
     "url": "https://github.com/YuQian2015/eft-cool-taro-ui"
   },
   "license": "ISC",
-  "dependencies": {
-    "@tarojs/components": "1.3.9",
-    "@tarojs/router": "1.3.9",
-    "@tarojs/taro": "1.3.9",
-    "@tarojs/taro-alipay": "1.3.9",
-    "@tarojs/taro-h5": "1.3.9",
-    "@tarojs/taro-swan": "1.3.9",
-    "@tarojs/taro-tt": "1.3.9",
-    "@tarojs/taro-weapp": "1.3.9",
-    "nerv-devtools": "^1.4.0",
-    "nervjs": "^1.4.0"
-  }
+	"dependencies": {
+		"@tarojs/components": "2.0.6",
+		"@tarojs/router": "2.0.6",
+		"@tarojs/taro": "2.0.6",
+		"@tarojs/taro-alipay": "2.0.6",
+		"@tarojs/taro-h5": "2.0.6",
+		"@tarojs/taro-swan": "2.0.6",
+		"@tarojs/taro-tt": "2.0.6",
+		"@tarojs/taro-weapp": "2.0.6",
+		"nerv-devtools": "^1.5.6",
+		"nervjs": "^1.5.6"
+	}
 }
