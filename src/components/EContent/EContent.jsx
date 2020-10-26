@@ -48,6 +48,7 @@ export default class EContent extends Component {
       ...this.props.refresherConfig
     }
     this.scrollTop = this.props.scrollTop || 0
+    this.pageIndex = Taro.getCurrentPages().length
   }
 
   componentWillMount() {
@@ -59,7 +60,9 @@ export default class EContent extends Component {
     Taro.eventCenter.on('focus', this.focus)
     Taro.eventCenter.on('blur', this.blur)
 
-    window.addEventListener('resize', this.onresize)
+    if (process.env.TARO_ENV === 'h5') {
+      window.addEventListener('resize', this.onresize)
+    }
   }
 
   componentWillUnmount() {
@@ -71,7 +74,9 @@ export default class EContent extends Component {
     Taro.eventCenter.off('focus', this.focus)
     Taro.eventCenter.off('blur', this.blur)
 
-    window.removeEventListener('resize', this.onresize)
+    if (process.env.TARO_ENV === 'h5') {
+      window.removeEventListener('resize', this.onresize)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -304,39 +309,43 @@ export default class EContent extends Component {
   }
 
   showRefresh = () => {
-    throttle({
-      method: () => {
-        // console.log('显示刷新')
-        this.startTime = new Date()
-        const time = 0.2;
-        this.setState({
-          dragStyle: {
-            top: this.refresherConfig.height + 'px',
-            transition: `all ${time}s`
-          },
-          downDragStyle: {
-            height: this.refresherConfig.height + 'px',
-            transition: `all ${time}s`
-          },
-          dragComplete: 100,
-          isRefreshing: true,
-          textStatus: 2
-        })
-      },
-      ahead: false,
-      type: 'showRefresh'
-    })
+    if (Taro.getCurrentPages().length === this.pageIndex) {
+      throttle({
+        method: () => {
+          // console.log('显示刷新')
+          this.startTime = new Date()
+          const time = 0.2;
+          this.setState({
+            dragStyle: {
+              top: this.refresherConfig.height + 'px',
+              transition: `all ${time}s`
+            },
+            downDragStyle: {
+              height: this.refresherConfig.height + 'px',
+              transition: `all ${time}s`
+            },
+            dragComplete: 100,
+            isRefreshing: true,
+            textStatus: 2
+          })
+        },
+        ahead: true,
+        type: 'showRefresh'
+      })
+    }
   }
 
   hideRefresh = () => {
-    throttle({
-      method: () => {
-        // console.log('隐藏刷新')
-        this.recover()
-      },
-      ahead: false,
-      type: 'hideRefresh'
-    })
+    if (Taro.getCurrentPages().length === this.pageIndex) {
+      throttle({
+        method: () => {
+          // console.log('隐藏刷新')
+          this.recover()
+        },
+        ahead: true,
+        type: 'hideRefresh'
+      })
+    }
   }
 
   render() {

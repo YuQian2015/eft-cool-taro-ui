@@ -96,9 +96,16 @@ export default class Index extends Component {
   goBack = () => {
     return true
   }
+
+  goDetailPage = () => {
+    Taro.navigateTo({
+      url: '/pages/detail/detail'
+    })
+
+  }
   render() {
     const { noMore, hasMore, refreshStatus, open, scrollTop } = this.state
-    const header = <ENavbar leftText='返回' rightText='Model' onClickRightText={this.openModel} onClickLeft={this.goBack} >首页</ENavbar>
+    const header = <ENavbar leftText='Back' rightText='More' onClickRightText={this.openModel} onClickLeft={this.goBack} >首页</ENavbar>
     const footer = <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
     const refresherConfig = {
       recoverTime: 300,
@@ -107,7 +114,7 @@ export default class Index extends Component {
     return (
       <View>
         <EModal openModel={open} position='right' onHide={this.hideModal}>
-          <View>model</View>
+          <View>Details</View>
         </EModal>
         <EPage
           renderHeader={<View className='header-container'>{header}</View>}
@@ -123,15 +130,9 @@ export default class Index extends Component {
           onScrollEnd={this.handleScrollEnd}
         >
           <View className='main-container'>
-            <View> Content </View>
-            <EButton onClick={this.openModel}>显示modal</EButton>
-            <View style={{ height: '30px' }}>content</View>
-            <View style={{ height: '300px' }}>content</View>
-            <View style={{ height: '300px' }}>content</View>
-            <View style={{ height: '300px' }}>content</View>
-            <View style={{ height: '300px' }}>content</View>
-            <EButton onClick={this.openModel}>显示modal</EButton>
-            <EButton onClick={this.openModel}>显示modal</EButton>
+            <EButton onClick={this.goDetailPage}>To Details</EButton>
+            <View style={{ height: '300px' }}>Contents</View>
+            <View style={{ height: '300px' }}>Contents</View>
             <EButton onClick={this.openModel}>显示modal</EButton>
             <EButton onClick={this.toTop}>回到顶部</EButton>
           </View>
