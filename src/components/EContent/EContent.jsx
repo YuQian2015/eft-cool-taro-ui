@@ -323,7 +323,7 @@ export default class EContent extends Component {
           textStatus: 2
         })
       },
-      ahead: true,
+      ahead: false,
       type: 'showRefresh'
     })
   }
@@ -334,7 +334,7 @@ export default class EContent extends Component {
         // console.log('隐藏刷新')
         this.recover()
       },
-      ahead: true,
+      ahead: false,
       type: 'hideRefresh'
     })
   }
