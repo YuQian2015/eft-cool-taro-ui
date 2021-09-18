@@ -13,7 +13,7 @@ export default class Index extends Component {
 
   render() {
     const header = <ENavbar>详情</ENavbar>
-    const footer = <View style={{ height: 300 }}>
+    const footer = <View style={{ height: '300px' }}>
       <EButton>Footer</EButton>
     </View>
     const refresherConfig = {
