@@ -47,9 +47,12 @@
 		"@tarojs/taro-tt": "2.2.15",
 		"@tarojs/taro-weapp": "2.2.15",
 		"babel-runtime": "^6.26.0",
+		"crypto-js": "^4.1.1",
+		"md5": "^2.3.0",
 		"nerv-devtools": "^1.5.7",
 		"nervjs": "^1.5.7",
-		"regenerator-runtime": "0.11.1"
+		"regenerator-runtime": "0.11.1",
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"@tarojs/mini-runner": "2.2.15",

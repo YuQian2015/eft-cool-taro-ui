@@ -174,6 +174,10 @@ export default class EContent extends Component {
     })
   }
   footer = (rect) => {
+    const { ePageId } = this.props
+    if (ePageId !== rect.ePageId) {
+      return
+    }
     // 优化 Content 渲染频率
     throttle({
       method: () => {

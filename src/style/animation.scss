@@ -1,4 +1,4 @@
-@keyframes pageLeft {
+@keyframes EPageLeft {
   from {
     transform: translateX(-100%);
   }
@@ -6,7 +6,7 @@
     transform: translateX(0);
   }
 }
-@keyframes pageRight {
+@keyframes EPageRightIn {
   from {
     transform: translateX(100%);
   }
@@ -14,8 +14,16 @@
     transform: translateX(0);
   }
 }
+@keyframes EPageRightOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
 
-@keyframes itemRight {
+@keyframes EItemRight {
   from {
     opacity: 0;
     transform: translateX(50px);
@@ -26,7 +34,7 @@
   }
 }
 
-@keyframes itemLeft {
+@keyframes EItemLeft {
   from {
     opacity: 0;
     transform: translateX(-50px);
@@ -37,7 +45,7 @@
   }
 }
 
-@keyframes leftOut {
+@keyframes ELeftOut {
   from {
     transform: translateX(0);
   }
@@ -46,7 +54,7 @@
   }
 }
 
-@keyframes rightOut {
+@keyframes ERightOut {
   from {
     transform: translateX(0);
   }
@@ -55,7 +63,7 @@
   }
 }
 
-@keyframes bottomOut {
+@keyframes EBottomOut {
   from {
     transform: translateY(0);
   }
@@ -64,8 +72,7 @@
   }
 }
 
-
-@keyframes itemBottom {
+@keyframes EItemBottom {
   from {
     opacity: 0;
     transform: translateY(50px);
@@ -76,7 +83,7 @@
   }
 }
 
-@keyframes bottomIn {
+@keyframes EBottomIn {
   from {
     transform: translateY(100%);
   }
@@ -85,7 +92,7 @@
   }
 }
 
-@keyframes scaleIn {
+@keyframes EScaleIn {
   from {
     opacity: 0;
     transform: scale3d(0.9, 0.9, 0.9);
@@ -96,7 +103,7 @@
   }
 }
 
-@keyframes loader {
+@keyframes ELoader {
   0% {
     transform: rotate(0deg);
   }
@@ -118,7 +125,7 @@
   }
 }
 
-@keyframes loader-inner {
+@keyframes ELoader-inner {
   0% {
     transform: translate3d(0, 100%, 0);
   }
@@ -140,7 +147,7 @@
   }
 }
 
-@keyframes progress {
+@keyframes EProgress {
   0% {
     transform: translate3d(-100%, 0, 0);
   }

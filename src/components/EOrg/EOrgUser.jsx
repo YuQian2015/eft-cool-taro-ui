@@ -5,7 +5,7 @@ class EOrgUser extends PureComponent {
   state = {}
 
   handleClick = () => {
-    const { data, descriptionHolder, checkable, onSelectChange } = this.props
+    const { data, checkable, onSelectChange } = this.props
     if (checkable && onSelectChange) {
       onSelectChange(data)
     }
@@ -13,7 +13,6 @@ class EOrgUser extends PureComponent {
 
   render() {
     const { data, descriptionHolder, checkable, active } = this.props
-    console.log(1)
     return (
       <View className='EOrgUser'>
         <View className='user-avatar'>

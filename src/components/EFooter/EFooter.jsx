@@ -7,7 +7,7 @@ export default class EFooter extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.countHeight()
   }
 
@@ -17,19 +17,21 @@ export default class EFooter extends Component {
 
   countHeight() {
     const query = Taro.createSelectorQuery()
+    const { ePageId } = this.props
     if (process.env.TARO_ENV === 'h5') {
       query.in(this)
     } else {
       query.in(this.$scope)
     }
     query.select('.EFooter').boundingClientRect(rect => {
-      if(rect) {
+      if (rect && ePageId) {
+        rect.ePageId = ePageId
         Taro.eventCenter.trigger('ESetFooter', rect)
       }
     }).exec()
   }
 
-  render () {
+  render() {
     return (
       <View className='EFooter'>
         {this.props.children}

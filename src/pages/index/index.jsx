@@ -2,16 +2,12 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 
 import { EButton, EPage, EModal, ENavbar, EOrg } from '../../components'
-import { pageAnimation } from '../../utils/index'
+
 
 import './index.scss'
 
-@pageAnimation
 export default class Index extends Component {
 
-  config = {
-    navigationBarTitleText: '首页'
-  }
 
   constructor() {
     super()
@@ -37,10 +33,14 @@ export default class Index extends Component {
 
   componentWillUnmount() { }
 
+  config = {
+    navigationBarTitleText: '首页'
+  }
+
   componentDidShow() { }
 
   componentDidHide() {
-    console.log(this);
+    // console.log(this);
   }
 
   refresh = () => {
@@ -127,6 +127,12 @@ export default class Index extends Component {
     })
   }
 
+  clearSelectedUser = () => {
+    this.setState({
+      ids: []
+    })
+  }
+
   render() {
     const { noMore, hasMore, refreshStatus, open, scrollTop, showOrg, ids } = this.state
     const header = <ENavbar leftText='Back' rightText='More' onClickRightText={this.openModel} onClickLeft={this.goBack} >首页</ENavbar>
@@ -156,11 +162,12 @@ export default class Index extends Component {
           <View className='main-container'>
             <EButton onClick={this.showOrg}>显示通讯录</EButton>
             <EButton onClick={this.hideOrg}>隐藏通讯录</EButton>
+            <EButton onClick={this.clearSelectedUser}>清除选中</EButton>
             {
               showOrg && <EOrg
                 title='123131'
-                orgUrl='https://t-api.exexm.com/api/Org'
-                searchUrl='https://t-api.exexm.com/api/Search'
+                orgUrl=''
+                searchUrl=''
                 checkable
                 multiple
                 onSelect={this.handleSelect}

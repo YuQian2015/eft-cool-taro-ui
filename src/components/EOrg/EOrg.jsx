@@ -10,6 +10,10 @@ import { throttle } from '../../utils/index'
 
 class EOrg extends Component {
 
+  static options = {
+    addGlobalClass: true
+  }
+
   state = {
     selectedUserIds: {},
     selectedUsers: [],
@@ -19,14 +23,10 @@ class EOrg extends Component {
     keyword: '',
     noMoreSearchData: false,
     hasMoreSearchData: false,
-    searchPage: 0,
     searchDataList: [],
     noResult: false
   }
 
-  static options = {
-    addGlobalClass: true
-  }
 
   componentDidMount() {
     this.fetchOrgData()
@@ -35,6 +35,18 @@ class EOrg extends Component {
       this.recoverSelectedUsers(selectedUserIds)
     }
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { selectedUserIds } = nextProps
+    if ((selectedUserIds || []).join('') !== (this.props.selectedUserIds || []).join('')) {
+      if (selectedUserIds && selectedUserIds.length >= 0) {
+        this.recoverSelectedUsers(selectedUserIds)
+      }
+    }
+  }
+
+  pageSize = 20
+  searchPage = 0
 
   transformResData = (res) => {
     if (res && res.data && res.data.length) {
@@ -77,11 +89,16 @@ class EOrg extends Component {
   recoverSelectedUsers = userIds => {
     const selectedUserIds = {}
     let selectedUsers = []
-    userIds.forEach(id => {
-      const user = Taro.getStorageSync('__EOrg_user_' + id)
-      if (user) {
-        selectedUsers.push(user)
-        selectedUserIds[id] = true
+    userIds.forEach(userData => {
+      if (typeof userData === 'object') {
+        selectedUserIds[userData.id] = true
+        selectedUsers.push(userData)
+      } else {
+        const user = Taro.getStorageSync('__EOrg_user_' + userData)
+        if (user) {
+          selectedUsers.push(user)
+          selectedUserIds[userData] = true
+        }
       }
     })
     this.setState({
@@ -92,6 +109,7 @@ class EOrg extends Component {
 
   handleSelectChange = data => {
     let { selectedUserIds, selectedUsers } = this.state
+    let selectChange = false
     const { multiple } = this.props
     if (data && data.id) {
       if (selectedUserIds[data.id] && multiple) {
@@ -100,13 +118,17 @@ class EOrg extends Component {
       }
       if (multiple) {
         selectedUserIds[data.id] = true
+        selectChange = true
         selectedUsers.push(data)
       } else {
+        if (!selectedUserIds[data.id]) {
+          selectChange = true
+        }
         selectedUserIds = { [data.id]: true }
         selectedUsers = [data]
       }
       this.setState({
-        selectedUserIds, selectedUsers
+        selectedUserIds, selectedUsers, selectChange
       })
     }
   }
@@ -128,7 +150,8 @@ class EOrg extends Component {
     setTimeout(() => {
       this.unSelectItem(item)
       this.setState({
-        removingIndex: undefined
+        removingIndex: undefined,
+        selectChange: true
       })
     }, 300);
   }
@@ -150,7 +173,7 @@ class EOrg extends Component {
     selectedUserIds[selectedData.id] = false
     const index = selectedUsers.findIndex(item => item.id === selectedData.id)
     selectedUsers.splice(index, 1)
-    this.setState({ selectedUsers, selectedUserIds })
+    this.setState({ selectedUsers, selectedUserIds, selectChange: true })
   }
 
   conform = () => {
@@ -187,11 +210,11 @@ class EOrg extends Component {
   }
 
   clearSearch = () => {
+    this.searchPage = 0
     this.setState({
       keyword: '',
       noMoreSearchData: false,
       hasMoreSearchData: false,
-      searchPage: 0,
       searchDataList: [],
       noResult: false
     })
@@ -206,21 +229,49 @@ class EOrg extends Component {
 
   searchTextChange = (e) => {
     this.setState({
-      keyword: e.detail.value
+      keyword: e.detail.value,
+      noResult: false,
+      noMoreSearchData: false,
+      hasMoreSearchData: false
     })
+    this.searchPage = 0
     throttle({ method: () => this.doSearch(e.detail.value), delay: 300 })
   }
 
   doSearch = (keyword) => {
+    if (!keyword) {
+      this.clearSearch()
+      return
+    }
     const { searchUrl } = this.props
+    let { searchDataList, noMoreSearchData, hasMoreSearchData } = this.state
+    let noResult = false
     http.get({
-      url: `${searchUrl}?key=${keyword}&page_size=20&limit_type=org&__v=3.1`
+      url: `${searchUrl}?key=${keyword}&page_size=${this.pageSize}&page=${this.searchPage}&limit_type=org&__v=3.1`
     }).then(res => {
-      const searchDataList = this.transformSearchResData(keyword, res)
+      if (this.searchPage === 0) {
+        searchDataList.length = 0
+        if (res && res.data && res.data.key === keyword && !res.data.result) {
+          noResult = true
+        }
+      }
+      if (res && res.data && res.data.key === keyword && res.data.result && res.data.result[0]) {
+        noMoreSearchData = !res.data.result[0].has_more
+        hasMoreSearchData = res.data.result[0].has_more
+      }
+      searchDataList.push(...this.transformSearchResData(keyword, res))
       this.setState({
-        searchDataList
+        searchDataList,
+        noResult,
+        noMoreSearchData,
+        hasMoreSearchData
       })
     })
+  }
+
+  loadMore = () => {
+    this.searchPage++
+    this.doSearch(this.state.keyword)
   }
 
   blur = () => {
@@ -232,30 +283,39 @@ class EOrg extends Component {
   }
 
   render() {
-    const { data, selectedUserIds, selectedUsers, showSelected, removingIndex, showCloseAnimation, hasResult,
-      searchingMode, keyword, searchDataList } = this.state
+    const { data, selectedUserIds, selectedUsers, selectChange, showSelected, removingIndex, showCloseAnimation, hasResult,
+      searchingMode, keyword, searchDataList, noResult, noMoreSearchData, hasMoreSearchData } = this.state
     const { orgUrl, checkable, renderCounter, multiple, conformText, title } = this.props
     return <View className='EOrg'>
-      <View className='header-bar'>
-        {
-          searchingMode && <ESearch
+      {
+        searchingMode && <View className='header-bar'>
+          <ESearch
             onChange={this.searchTextChange}
             onCancel={this.cancelSearch}
             onClear={this.clearSearch}
             ref={search => this.searchRef = search}
             value={keyword}
-            placeholder={'输入需要搜索的内容'}
-            cancelText={'取消'}
+            placeholder='输入搜索的内容'
+            cancelText='取消'
           />
-        }
-      </View>
-      {!searchingMode && <ESearchHolder placeholder={'local.TEXT_SEARCH_TEXT'} onClick={this.toSearch} />}
+        </View>
+      }
+      {!searchingMode && <ESearchHolder placeholder='搜索' onClick={this.toSearch} />}
       {!searchingMode && <View className='title'>{title || '组织结构'}</View>}
       {
         !searchingMode && data && data.length > 0 && data.map(item => <EOrgDept selectedUserIds={selectedUserIds} checkable={checkable} onSelectChange={this.handleSelectChange} key={item.id} http={http} orgUrl={orgUrl} data={item} />)
       }
       {
         searchingMode && searchDataList && searchDataList.length > 0 && searchDataList.map(item => <EOrgDept selectedUserIds={selectedUserIds} checkable={checkable} onSelectChange={this.handleSelectChange} key={item.id} http={http} orgUrl={orgUrl} data={item} />)
+      }
+      {
+        noResult && <View className='no-search-result'>没有搜索到<Text className='keyword'>{keyword}</Text>的相关结果</View>
+      }
+      {
+        hasMoreSearchData && <EButton outline circle onClick={this.loadMore}>加载更多</EButton>
+      }
+      {
+        noMoreSearchData && <View className='no-more-result'>没有更多了</View>
       }
       {
         showSelected && multiple && <View className={showCloseAnimation ? 'selector-panel close' : 'selector-panel'} isOpened={showSelected && selectedUsers.length > 0}>
@@ -277,7 +337,7 @@ class EOrg extends Component {
         </View>
       }
       {
-        hasResult && !showSelected && selectedUsers.length > 0 && multiple && <View className='select-counter'>
+        hasResult && !showSelected && (selectedUsers.length > 0 || selectChange) && multiple && <View className='select-counter'>
           <View className='counter' onClick={this.showSelectedList}><Text className='eft exe-packup'></Text>{renderCounter ? renderCounter(selectedUsers) : '已选择' + selectedUsers.length + '人'}</View>
           <View className='multi-conform-button' onClick={this.conform}>{conformText || '确定'}</View>
         </View>

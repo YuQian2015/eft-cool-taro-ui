@@ -100,6 +100,23 @@
       }
     }
   }
+  .no-search-result {
+    word-break: break-all;
+    font-size: 32px;
+    color: $color-text-primary;
+    text-align: center;
+    padding: 100px 0;
+    .keyword {
+      color: $color-brand-color;
+      margin: 0 10px;
+    }
+  }
+  .no-more-result {
+    text-align: center;
+    color: $color-text-primary;
+    font-size: 32px;
+    padding: 60px 0;
+  }
   .select-counter {
     border-top: solid 1px $color-line;
     display: flex;

@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro'
+import CryptoJS from 'crypto-js'
 import md5 from 'md5'
 
 // 处理响应错误
@@ -18,7 +19,7 @@ const handleError = (res) => {
 
 const setSignHeaders = () => {
   const user = {
-    "userId":"YQ123",
+    "userId":"3025437003243520",
     "tenantId":"dev",
   }
   const { userId } = user
@@ -34,6 +35,15 @@ const setSignHeaders = () => {
   const midPart = lastPart.concat(firstPart).join('');
   const signature = md5(md5(midPart)).toUpperCase();
   return { timeStamp, nonce, signature }
+  // build:ui
+  // return {}
+}
+
+// build:ui hide
+const aesEncrypt = (text) => {
+  const key = CryptoJS.enc.Utf8.parse("");
+  const iv = CryptoJS.enc.Utf8.parse("");
+  return CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(text), key, { iv, mode: CryptoJS.mode.CBC }).toString();
 }
 
 // 添加拦截器
@@ -44,23 +54,23 @@ const interceptor = (chain) => {
   let { url } = requestParams
   // console.log(`http ${method || 'GET'} --> ${url} data: `, data)
   // 使用chain.proceed调用下一个拦截器或发起请求
-  const token = 'GZR7uH9u7BZ%2bA2ddzMFadA2muMsnP77McMAvxZkdZRc%3d'
+  const token = '9gmeEmnPFvlRQ4cFRdMvY79NXubIyLKWnmFmvRr7whVP48iDyirPrvQxad9WKf85'
   const user = {
-    "userId":"YQ123",
+    "userId":"3025437003243520",
     "tenantId":"dev",
   }
   
-  // const { tenantId, userId } = user
-  // if (tenantId && userId) {
-  //   var joiner = url.indexOf('?') !== -1 ? '&' : '?';
-  //   var versionStr = '';
-  //   // if(version && htmlVersion) {
-  //   //     versionStr = version + ':' + htmlVersion;
-  //   // }
-  //   requestParams.url = url + joiner + '__u='
-  //     + encodeURIComponent(aesEncrypt(tenantId + ':' + userId))
-  //     + '__e=' + encodeURIComponent(aesEncrypt(versionStr))
-  // }
+  const { tenantId, userId } = user
+  if (tenantId && userId) {
+    var joiner = url.indexOf('?') !== -1 ? '&' : '?';
+    var versionStr = '';
+    // if(version && htmlVersion) {
+    //     versionStr = version + ':' + htmlVersion;
+    // }
+    requestParams.url = url + joiner + '__u='
+      + encodeURIComponent(aesEncrypt(tenantId + ':' + userId))
+      + '&__e=' + encodeURIComponent(aesEncrypt(versionStr))
+  }
   if (token) {
     requestParams.header.token = token
   }
@@ -111,6 +121,7 @@ const interceptor = (chain) => {
     })
 }
 
+// build:ui hide
 Taro.addInterceptor(interceptor)
 
 export default {

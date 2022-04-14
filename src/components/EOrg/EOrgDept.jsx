@@ -3,13 +3,13 @@ import { View, Text } from '@tarojs/components'
 import EOrgUser from './EOrgUser'
 
 class EOrgDept extends Component {
+  static options = {
+    addGlobalClass: true
+  }
+
   state = {
     showChildren: false,
     list: []
-  }
-
-  static options = {
-    addGlobalClass: true
   }
 
   handleClick = () => {
@@ -40,7 +40,7 @@ class EOrgDept extends Component {
   fetchOrgData = () => {
     const { orgUrl, http, data } = this.props
     http.get({
-      url: orgUrl + `?parentId=${data.id}&type=1`
+      url: orgUrl + `?parentId=${data.id}&type=${data.type}`
     }).then(res => {
       const list = this.transformResData(res)
       this.setState({
@@ -62,16 +62,16 @@ class EOrgDept extends Component {
     return (
       <View className='EOrgDept'>
         {
-          data.type === 1 &&
+          (data.type === 0 || data.type === 1) &&
           <View className='parent-dept' onClick={this.handleClick}>
             {
               data.has_child && (showChildren ? <Text className='eft exe-unfold EOrgDept-icon'></Text> : <Text className='eft exe-enter EOrgDept-icon'></Text>)
             }
-            {data.name || '未知'}（{data.count && (`${data.direct_count} / ${data.count}`)}）
+            {data.name || '未知'}{data.count && `（${data.direct_count} / ${data.count}）`}
           </View>
         }
         {
-          data.type !== 1 && <EOrgUser active={selectedUserIds && selectedUserIds[data.id]} data={data} checkable={checkable} onSelectChange={this.handleSelectChange} />
+          data.type !== 0 && data.type !== 1 && <EOrgUser active={selectedUserIds && selectedUserIds[data.id]} data={data} checkable={checkable} onSelectChange={this.handleSelectChange} />
         }
         {
           showChildren &&

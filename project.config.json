@@ -1,41 +1,16 @@
 {
-  "miniprogramRoot": "dist/",
-  "projectname": "eft-taro-page",
-  "description": "EXE大前端团队Taro组件",
-  "appid": "touristappid",
-  "setting": {
-    "urlCheck": true,
-    "es6": false,
-    "postcss": false,
-    "preloadBackgroundData": false,
-    "minified": false,
-    "newFeature": true,
-    "coverView": true,
-    "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "useMultiFrameRuntime": true,
-    "useApiHook": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    },
-    "bundle": false,
-    "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "userConfirmedBundleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": [],
-    "minifyWXSS": true,
-    "useApiHostProcess": false
-  },
-  "compileType": "miniprogram",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
-  "condition": {}
+	"miniprogramRoot": "dist/",
+	"projectname": "eft-taro-page",
+	"description": "EXE大前端团队Taro组件",
+	"appid": "touristappid",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false
+	},
+	"compileType": "miniprogram",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {}
 }

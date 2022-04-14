@@ -12,7 +12,7 @@ class ESearch extends Component {
     return (
       <View className='ESearch'>
         <View className='search-box'>
-          <Text className='eft exe-search'></Text>
+          <Text className='eft exe-search-o'></Text>
           <Input className='wrap-input'
             ref={node => this.fileInputEl = node}
             placeholder={placeholder || 'Search'}

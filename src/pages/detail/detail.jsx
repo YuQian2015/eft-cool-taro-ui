@@ -7,19 +7,22 @@ import { pageAnimation } from '../../utils/index'
 import './detail.scss'
 
 @pageAnimation
-export default class Index extends Component {
+export default class Detail extends Component {
 
   state = {
     left: true
   }
 
   componentWillMount() {
-    console.log('length:' + Taro.getCurrentPages().length);
     console.log(this.goInDir);
   }
 
   componentDidMount() {
     console.log('mount');
+  }
+
+  beforeRouteLeave(from, to, next) {
+    next(true)
   }
 
   config = {
@@ -28,9 +31,7 @@ export default class Index extends Component {
 
   render() {
     const header = <ENavbar>详情</ENavbar>
-    const footer = <View style={{ height: '300px' }}>
-      <EButton>Footer</EButton>
-    </View>
+    const footer = <EButton>Footer</EButton>
     const refresherConfig = {
       disabled: true
     }
@@ -40,6 +41,50 @@ export default class Index extends Component {
         renderFooter={<View className='footer-container'>{footer}</View>}
         refresherConfig={refresherConfig}
       >
+        <View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+          <View>12313</View>
+        </View>
       </EPage>
     )
   }

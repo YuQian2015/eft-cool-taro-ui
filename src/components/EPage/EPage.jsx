@@ -1,6 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import PropTypes from 'prop-types'
+import { v4 as uuidv4 } from 'uuid'
 
 import EHeader from '../EHeader/EHeader'
 import EContent from '../EContent/EContent'
@@ -12,11 +13,14 @@ export default class EPage extends Component {
     addGlobalClass: true
   }
 
+  __ePageId = uuidv4()
+
   render() {
     return (
       <View className={`EPage ${this.props.className || ''}`}>
-        <EHeader>{this.props.renderHeader}</EHeader>
+        <EHeader ePageId={this.__ePageId}>{this.props.renderHeader}</EHeader>
         <EContent
+          ePageId={this.__ePageId}
           onRefresh={this.props.onRefresh}
           onScrollToLower={this.props.onLoadMore}
           onScroll={this.props.onScroll}
@@ -30,7 +34,7 @@ export default class EPage extends Component {
           refresherConfig={this.props.refresherConfig || {}}
           scrollTop={this.props.scrollTop}
         >{this.props.children}</EContent>
-        <EFooter>{this.props.renderFooter}</EFooter>
+        <EFooter ePageId={this.__ePageId}>{this.props.renderFooter}</EFooter>
       </View>
     )
   }
@@ -52,10 +56,10 @@ EPage.propTypes = {
   hasMoreText: PropTypes.string,
   refreshStatus: PropTypes.number,
   refresherConfig: PropTypes.shape({
-      recoverTime:  PropTypes.number,
-      refreshTime: PropTypes.number,
-      threshold: PropTypes.number,
-      maxHeight: PropTypes.number,
-      height: PropTypes.number
+    recoverTime: PropTypes.number,
+    refreshTime: PropTypes.number,
+    threshold: PropTypes.number,
+    maxHeight: PropTypes.number,
+    height: PropTypes.number
   })
 }
