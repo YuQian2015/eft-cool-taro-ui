@@ -1,0 +1,204 @@
+.EOrg {
+  padding: 0 16px;
+  padding-bottom: 120px;
+  .title {
+    font-size: 28px;
+    padding: 16px;
+    color: $color-text-primary;
+    background: $color-bg-disable;
+  }
+  .header-bar {
+    border-bottom: solid 1px $color-line;
+    box-sizing: border-box;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    background: $color-bg-element;
+  }
+  .selector-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10000;
+    border-radius: 32px 32px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba($color: #000000, $alpha: 0.4);
+    animation: bottomIn 300ms cubic-bezier(0, 0, 0.3, 1) forwards;
+    &.close {
+      animation: bottomOut 300ms cubic-bezier(0, 0, 0.3, 1) forwards;
+    }
+    .selected-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 18px 32px;
+      background: $color-bg-element;
+      border-bottom: solid 1px $color-line;
+      .selected-title {
+        flex: 1;
+        font-size: 36px;
+        color: $color-text-primary;
+        animation: itemRight 400ms linear forwards;
+      }
+      .multi-conform-button {
+        color: #225599;
+        padding: 20px 0 20px 20px;
+        font-size: 32px;
+      }
+      .exe-unfold {
+        padding: 20px 20px 20px 0;
+        font-size: 40px;
+        color: $color-text-primary;
+      }
+    }
+    .selected-list {
+      max-height: 800px;
+      min-height: 400px;
+      background: $color-bg-element;
+    }
+    .selected-item {
+      position: relative;
+      padding: 28px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &.remove {
+        animation: rightOut 300ms linear forwards;
+        .exe-fail {
+          display: none;
+        }
+      }
+      .selected-name {
+        flex: 1;
+        font-size: 32px;
+        color: $color-text-primary;
+        text-align: left;
+      }
+      .exe-fail {
+        color: $color-text-danger;
+        font-size: 48px;
+      }
+      &::after {
+        content: "";
+        position: absolute;
+        transform-origin: center;
+        box-sizing: border-box;
+        pointer-events: none;
+        top: -50%;
+        left: -45%;
+        right: -50%;
+        bottom: -50%;
+        border: 0 solid $color-line;
+        transform: scale(0.5);
+        border-bottom-width: 1px;
+      }
+      &:last-child::after {
+        left: -50%;
+      }
+    }
+  }
+  .select-counter {
+    border-top: solid 1px $color-line;
+    display: flex;
+    padding: 16px 30px;
+    box-sizing: border-box;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 10000;
+    background: $color-bg-element;
+    animation: bottomIn 200ms cubic-bezier(0, 0, 0.3, 1) forwards;
+    .counter {
+      flex: 1;
+      text-align: left;
+      color: $color-text-description;
+      font-size: 24px;
+      line-height: 68px;
+    }
+    .multi-conform-button {
+      color: $color-text-in-brand;
+      background: $color-brand-color;
+      border-radius: 8px;
+      height: 68px;
+      padding: 0 40px;
+      font-size: 28px;
+      line-height: 68px;
+    }
+    .exe-packup {
+      margin-right: 8px;
+      font-size: 40px;
+      color: $color-text-primary;
+      vertical-align: middle;
+    }
+  }
+  .conform-button {
+    border-top: solid 1px $color-line;
+    box-sizing: border-box;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 10000;
+    background: $color-bg-element;
+    animation: bottomIn 200ms cubic-bezier(0, 0, 0.3, 1) forwards;
+  }
+}
+
+.EOrgDept {
+  font-size: 32px;
+  .parent-dept {
+    border-bottom: 1px solid $color-line;
+    padding: 16px 0;
+  }
+  .children-dept {
+    padding-left: 40px;
+  }
+  .EOrgDept-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+.EOrgUser {
+  display: flex;
+  padding: 16px 0;
+  border-bottom: 1px solid $color-line;
+  align-items: center;
+  .user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 16px;
+    overflow: hidden;
+    .user-picture {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .user-info {
+    flex: 1;
+    .user-name {
+      font-size: 28px;
+      word-break: break-all;
+    }
+    .description {
+      color: $color-text-description;
+      font-size: 28px;
+      word-break: break-all;
+    }
+  }
+  .selector {
+    .selector-icon {
+      font-size: 52px;
+      color: $color-text-primary;
+      &.active {
+        color: $color-brand-color;
+        animation: scaleIn 300ms cubic-bezier(0, 0, 0.6, 1.5) forwards;
+      }
+    }
+  }
+}

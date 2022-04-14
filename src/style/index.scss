@@ -1,4 +1,5 @@
 @import "./main.scss";
+@import "./animation.scss";
 @import "./font/iconfont.scss";
 @import "./EButton.scss";
 @import "./EActivityIndicator.scss";
@@ -8,3 +9,15 @@
 @import "./EPage.scss";
 @import "./Refresher.scss";
 @import "./ENavbar.scss";
+@import "./EOrg.scss";
+@import "./ESearch.scss";
+
+.EPage-animation {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    animation: pageRight 200ms cubic-bezier(0, 0, 0.4, 1);
+}

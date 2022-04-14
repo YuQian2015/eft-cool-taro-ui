@@ -1,10 +1,12 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 
-import { EButton, EPage, EModal, ENavbar } from '../../components'
+import { EButton, EPage, EModal, ENavbar, EOrg } from '../../components'
+import { pageAnimation } from '../../utils/index'
 
 import './index.scss'
 
+@pageAnimation
 export default class Index extends Component {
 
   config = {
@@ -37,7 +39,9 @@ export default class Index extends Component {
 
   componentDidShow() { }
 
-  componentDidHide() { }
+  componentDidHide() {
+    console.log(this);
+  }
 
   refresh = () => {
     this.setState({
@@ -103,8 +107,28 @@ export default class Index extends Component {
     })
 
   }
+
+  showOrg = () => {
+    this.setState({
+      showOrg: true
+    })
+  }
+
+  hideOrg = () => {
+    this.setState({
+      showOrg: false
+    })
+  }
+
+  handleSelect = data => {
+    const ids = data.map(item => item.id)
+    this.setState({
+      ids
+    })
+  }
+
   render() {
-    const { noMore, hasMore, refreshStatus, open, scrollTop } = this.state
+    const { noMore, hasMore, refreshStatus, open, scrollTop, showOrg, ids } = this.state
     const header = <ENavbar leftText='Back' rightText='More' onClickRightText={this.openModel} onClickLeft={this.goBack} >首页</ENavbar>
     const footer = <EButton outline circle onClick={this.refreshLater}>1秒后显示刷新</EButton>
     const refresherConfig = {
@@ -130,6 +154,21 @@ export default class Index extends Component {
           onScrollEnd={this.handleScrollEnd}
         >
           <View className='main-container'>
+            <EButton onClick={this.showOrg}>显示通讯录</EButton>
+            <EButton onClick={this.hideOrg}>隐藏通讯录</EButton>
+            {
+              showOrg && <EOrg
+                title='123131'
+                orgUrl='https://t-api.exexm.com/api/Org'
+                searchUrl='https://t-api.exexm.com/api/Search'
+                checkable
+                multiple
+                onSelect={this.handleSelect}
+                selectedUserIds={ids}
+                conformText='选择'
+                renderCounter={(users) => <Text>已选择 {users.length} 个</Text>}
+              />
+            }
             <EButton onClick={this.goDetailPage}>To Details</EButton>
             <View style={{ height: '300px' }}>Contents</View>
             <View style={{ height: '300px' }}>Contents</View>

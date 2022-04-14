@@ -24,7 +24,7 @@ export default class ENavbar extends Component {
     return (
       <View className='ENavbar'>
         <View className='navbar-left' onClick={this.goBack}>
-          <Text className="exe exe-return"></Text>{this.props.leftText}
+          <Text className="eft exe-return"></Text>{this.props.leftText}
         </View>
         <View className='navbar-title'>
           {this.props.children}

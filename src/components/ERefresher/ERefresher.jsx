@@ -29,7 +29,7 @@ class Refresher extends Component {
         <View className='spot center' style={centerSize}>
           {
             this.props.complete == 100
-              ? <View className={this.props.isRefreshing ? 'exe active' : 'exe'}>
+              ? <View className={this.props.isRefreshing ? 'eft active' : 'eft'}>
                 <View className='loader-spot'></View>
               </View>
               : null

@@ -1,0 +1,60 @@
+.ESearchHolder {
+  padding: 20px;
+  background: $color-bg-element;
+  .search {
+    height: 72px;
+    font-size: 28px;
+    color: $color-text-description-s;
+    letter-spacing: 0;
+    line-height: 40px;
+    background: $color-bg-content;
+    border-radius: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .exe {
+      font-size: 40px;
+      margin: 4px 12px 0 0;
+    }
+  }
+}
+
+.ESearch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  padding: 10px 20px;
+  animation: itemBottom 100ms linear;
+
+  .search-box {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background: $color-bg-content;
+    padding: 8px 20px;
+    border-radius: 100px;
+    color: $color-text-description-s;
+
+    .exe {
+      font-size: 40px;
+      margin-right: 20px;
+    }
+    .exe-fail {
+      margin: 0;
+    }
+
+    .wrap-input {
+      padding: 8px 0;
+      font-size: 28px;
+      color: $color-text-primary;
+    }
+  }
+
+  .cancel {
+    font-size: 32px;
+    color: #225599;
+    padding-left: 24px;
+  }
+}
